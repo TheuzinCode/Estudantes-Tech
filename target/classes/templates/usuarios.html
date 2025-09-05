@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Usuários</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        th {
+            background: #eee;
+        }
+
+        button {
+            margin: 0 2px;
+        }
+    </style>
+</head>
+
+<body>
+<h2>CRUD de Usuários</h2>
+<div th:if="${emailError}">
+    <script>alert('Já existe um usuário com este email!');</script>
+</div>
+
+<form id="formCriarUsuario" th:action="@{/usuarios/criar}" method="post" style="margin-bottom: 20px;"
+      onsubmit="return validarSenhas();">
+    <input type="text" name="name" placeholder="Nome" required/>
+    <input type="text" name="cpf" placeholder="CPF" required/>
+    <input type="email" name="email" placeholder="Email" required/>
+    <input type="password" id="senha1" name="password" placeholder="Senha" required/>
+    <input type="password" id="senha2" name="passwordConfirm" placeholder="Confirme a Senha" required/>
+    <label>
+        <input type="checkbox" name="isAdmin"/> Admin
+    </label>
+    <button type="submit">Criar Usuário</button>
+</form>
+
+<script>
+    function validarCPF(cpf) {
+        return /^\d{11}$/.test(cpf);
+    }
+
+    function validarSenhasEdicao(form) {
+        var senha1 = form.querySelector('input[name="password"]').value;
+        var senha2 = form.querySelector('input[name="passwordConfirm"]').value;
+        if (senha1 !== senha2) {
+            alert('As senhas não coincidem!');
+            return false;
+        }
+        var cpf = form.querySelector('input[name="cpf"]').value;
+        if (!validarCPF(cpf)) {
+            alert('O CPF deve conter exatamente 11 dígitos numéricos!');
+            return false;
+        }
+        return true;
+    }
+
+    function validarSenhas() {
+        var senha1 = document.getElementById('senha1').value;
+        var senha2 = document.getElementById('senha2').value;
+        if (senha1 !== senha2) {
+            alert('As senhas não coincidem!');
+            return false;
+        }
+        var cpf = document.querySelector('#formCriarUsuario input[name="cpf"]').value;
+        if (!validarCPF(cpf)) {
+            alert('O CPF deve conter exatamente 11 dígitos numéricos!');
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<table>
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Senha</th>
+        <th>Admin</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <form th:action="@{'/usuarios/editar/' + ${user.userId}}" method="post"
+              onsubmit="return validarSenhasEdicao(this);">
+            <td><input type="text" name="name" th:value="${user.name}" required/></td>
+            <td>
+                <input type="password" name="password" placeholder="Nova senha"/>
+                <input type="password" name="passwordConfirm" placeholder="Confirme a senha"/>
+            </td>
+            <td><input type="text" name="cpf" th:value="${user.cpf}" required/></td>
+            <td>
+                <input type="checkbox" name="isAdmin" th:checked="${user.isAdmin}"/>
+            </td>
+            <td>
+                <select name="active">
+                    <option th:value="true" th:selected="${user.active}">Ativo</option>
+                    <option th:value="false" th:selected="${!user.active}">Inativo</option>
+                </select>
+            </td>
+            <td>
+                <button type="submit">Salvar</button>
+            </td>
+        </form>
+        <form th:action="@{'/usuarios/excluir/' + ${user.userId}}" method="post" style="display:inline;">
+            <td colspan="6" style="text-align:right;">
+                <button type="submit"
+                        onclick="return confirm('Tem certeza que deseja excluir?');">Excluir
+                </button>
+            </td>
+        </form>
+    </tr>
+    </tbody>
+</table>
+</body>
+
+</html>
