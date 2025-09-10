@@ -1,6 +1,6 @@
 package com.estudantestech.store.repositories;
 
-import com.estudantestech.store.domain.order.Product;
+import com.estudantestech.store.domain.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
