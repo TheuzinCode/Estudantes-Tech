@@ -1,0 +1,5 @@
+# Configurações de IDE
+.idea/
+*.iml
+*.classpath
+*.project
