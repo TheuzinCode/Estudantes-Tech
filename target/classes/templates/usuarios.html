@@ -25,13 +25,13 @@
 </head>
 
 <body>
-<h2>CRUD de Usuários</h2>
+<h2>Usuários</h2>
 <div th:if="${emailError}">
     <script>alert('Já existe um usuário com este email!');</script>
 </div>
 
 <form id="formCriarUsuario" th:action="@{/usuarios/criar}" method="post" style="margin-bottom: 20px;"
-      onsubmit="return validarSenhas();">
+      onsubmit="return validarCPFeSenhas();">
     <input type="text" name="name" placeholder="Nome" required/>
     <input type="text" name="cpf" placeholder="CPF" required/>
     <input type="email" name="email" placeholder="Email" required/>
@@ -63,7 +63,7 @@
         return true;
     }
 
-    function validarSenhas() {
+    function validarCPFeSenhas() {
         var senha1 = document.getElementById('senha1').value;
         var senha2 = document.getElementById('senha2').value;
         if (senha1 !== senha2) {

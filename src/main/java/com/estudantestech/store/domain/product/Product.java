@@ -18,12 +18,12 @@ import java.util.UUID;
 @Setter
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     private String name;
     private Integer quantity;
     private BigDecimal value;
+    private boolean active = true;
 
     @CreationTimestamp
     private Instant creationTimestamp;
@@ -31,10 +31,11 @@ public class Product {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    public Product(String name, Integer quantity, BigDecimal value, Instant creationTimestamp, Instant updateTimestamp) {
+    public Product(String name, Integer quantity, BigDecimal value, boolean active, Instant creationTimestamp, Instant updateTimestamp) {
         this.name = name;
         this.quantity = quantity;
         this.value = value;
+        this.active = active;
     }
 
     public Product () {

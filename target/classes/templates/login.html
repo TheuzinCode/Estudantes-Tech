@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,19 +62,10 @@
         <script>alert('Usuário ou senha incorretos!');</script>
     </div>
     <form th:action="@{/process-login}" method="post">
-        <label>Email: <input type="email" name="email" /></label><br/>
-        <label>Senha: <input type="password" name="password" /></label><br/>
+        <label>Email: <input type="email" name="email"/></label><br/>
+        <label>Senha: <input type="password" name="password"/></label><br/>
         <button type="submit">Entrar</button>
     </form>
 </div>
-
-<!--<script>-->
-<!--&lt;!&ndash;    // Adicione validação ou lógica de login aqui posteriormente&ndash;&gt;-->
-<!--&lt;!&ndash;    document.getElementById('loginForm').addEventListener('submit', function(e) {&ndash;&gt;-->
-<!--&lt;!&ndash;        // Em uma implementação real, você validaria as credenciais aqui&ndash;&gt;-->
-<!--&lt;!&ndash;        // antes de redirecionar para o dashboard&ndash;&gt;-->
-<!--&lt;!&ndash;        console.log('Formulário submetido - redirecionando para dashboard');&ndash;&gt;-->
-<!--&lt;!&ndash;    });&ndash;&gt;-->
-<!--</script>-->
 </body>
 </html>
