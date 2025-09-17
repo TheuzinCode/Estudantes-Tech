@@ -38,12 +38,10 @@ public class ProductService {
     }
 
 
-
     public Optional<Product> getProductById(UUID id){
         return productRepository.findById(id);
 
     }
-
 
 
     public void delete(Product product){
