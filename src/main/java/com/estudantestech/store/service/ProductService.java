@@ -58,7 +58,7 @@ public class ProductService {
     }
 
     public void update(@NotNull Product product){
-        if (product.getId() == null)
+        if (product.getIdProduct() == null)
             throw new IllegalArgumentException("Para atualizar, é necessario que o produto já esteja salvo na base");
 
         productRepository.save(product);
