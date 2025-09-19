@@ -218,9 +218,11 @@ body {
     <div class="controls-bar">
         <h2 class="section-title">Produtos</h2>
         <div class="controls">
-            <button class="btn-new-product">+ Novo Produto</button>
-            <input type="text" placeholder="Pesquisar">
-            <button class="btn-search">🔍</button>
+            <a class="btn-new-product" href="/cadastro">+ Novo Produto</a>
+            <form th:action="@{/products}" method="get">
+            <input type="text" name="name" placeholder="Pesquisar" th:value="${param.name}">
+           <button type="submit" class="btn-search">🔍</button>
+            </form>
         </div>
     </div>
 
@@ -245,7 +247,7 @@ body {
             <td>
 
                 <div class="action-buttons">
-                    <button class="btn-alterar" >Alterar</button>
+                    <button class="btn-alterar"><a th:href="@{/produtos/editar/{id}(id=${p.idProduct})}" class="btn-alterar">Alterar</a></button>
                     <button class="btn-visualizar">Visualizar</button>
                     <button class="btn-ativo" type="button"
                             th:data-id="${p.idProduct}"

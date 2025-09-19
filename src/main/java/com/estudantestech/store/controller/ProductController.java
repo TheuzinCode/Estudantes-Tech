@@ -23,7 +23,7 @@ public class ProductController {
         this.service = service;
     }
 
-    @PostMapping("/save")
+   /* @PostMapping("/save")
     public ResponseEntity<Void> save(@RequestBody @Valid CreateProductDTO product ){
             Product productEntity = product.CreateProduct();
             service.save(productEntity);
@@ -32,9 +32,11 @@ public class ProductController {
     }
 
 
+    */
+
     @GetMapping("{id}")
-    public ResponseEntity<CreateProductDTO> getProductById(@PathVariable("id") String id){
-        var idProduct = UUID.fromString(id);
+    public ResponseEntity<CreateProductDTO> getProductById(@PathVariable("id") Long id){
+        var idProduct = id;
         Optional<Product> optionalProduct = service.getProductById(idProduct);
         if (optionalProduct.isPresent()){
             Product product = optionalProduct.get();
@@ -53,8 +55,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") String id){
-        var idProduct = UUID.fromString(id);
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id){
+        var idProduct = id;
         Optional<Product> productOptional = service.getProductById(idProduct);
 
         if (productOptional.isEmpty()){
@@ -85,8 +87,8 @@ public class ProductController {
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") String id, @RequestBody CreateProductDTO productDTO){
-        var idProduct = UUID.fromString(id);
+    public ResponseEntity<Void> update(@PathVariable("id") Long id, @RequestBody CreateProductDTO productDTO){
+        var idProduct = (id);
         Optional<Product> productOptional = service.getProductById(idProduct);
 
         if (productOptional.isEmpty()){

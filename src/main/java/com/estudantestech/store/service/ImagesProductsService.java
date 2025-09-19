@@ -3,12 +3,14 @@ package com.estudantestech.store.service;
 import com.estudantestech.store.domain.images.ImagesProduct;
 import com.estudantestech.store.domain.product.Product;
 import com.estudantestech.store.repositories.ImagesProductsRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class ImagesProductsService {
 
     private final ImagesProductsRepository imagesProductsRepository;
@@ -23,6 +25,8 @@ public class ImagesProductsService {
         ImagesProduct imagesProduct = new ImagesProduct();
         imagesProduct.setTipo(file.getContentType());
         imagesProduct.setDados(file.getBytes());
+
+        imagesProduct.setProduct(product);
         product.getImagesProducts().add(imagesProduct);
 
         ImagesProduct images = imagesProductsRepository.save(imagesProduct);

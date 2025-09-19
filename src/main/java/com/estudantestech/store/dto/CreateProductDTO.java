@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record CreateProductDTO(UUID id,
+public record CreateProductDTO(Long id,
                                @NotBlank(message = "campo obrigatorio") String name,
                                @NotNull(message = "campo obrigatorio") Integer stars,
                                @NotBlank(message = "campo obrigatorio") String description,
