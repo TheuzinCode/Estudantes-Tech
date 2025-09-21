@@ -1,11 +1,11 @@
 package com.estudantestech.store.repositories;
 
-import com.estudantestech.store.domain.product.Product;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.UUID;
+import com.estudantestech.store.domain.product.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
