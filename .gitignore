@@ -3,3 +3,6 @@
 *.iml
 *.classpath
 *.project
+
+# Variaveis de ambiente
+src/main/resources/application.properties

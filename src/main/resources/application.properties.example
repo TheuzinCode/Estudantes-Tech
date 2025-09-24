@@ -1,0 +1,10 @@
+spring.application.name=Estudantes-Tech
+
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.jpa.show-sql=true
+
+spring.jpa.hibernate.ddl-auto=update
