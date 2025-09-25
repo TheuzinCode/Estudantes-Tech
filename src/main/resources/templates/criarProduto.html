@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Produto</title>
-    <link rel="stylesheet" href="@{/css/criarProduto.css}">
+    <link rel="stylesheet" th:href="@{/css/criarProduto.css}">
 </head>
 
 <body>
-
 <main class="main-container-cadastro">
     <div class="cadastro-box">
         <div class="form-section">
@@ -34,7 +33,7 @@
                     <label for="avaliacao">AVALIAÇÃO:</label>
                     <input type="number" id="avaliacao" placeholder="avaliacao" th:field="*{stars}">
                 </div>
-                <input class="btn-foto" type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg" />
+                <input class="btn-foto" type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg"/>
                 <button type="submit" class="btn-submit">ADICIONAR PRODUTO</button>
                 <button class="btn-cancel">CANCELAR</button>
             </form>
