@@ -1,27 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{/js/usuarios.js}"></script>
+<link rel="stylesheet" th:href="@{/css/usuarios.css}"/>
 
 <head>
     <meta charset="UTF-8">
     <title>Usuários</title>
-    <style>
-        table {
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-        }
-
-        th {
-            background: #eee;
-        }
-
-        button {
-            margin: 0 2px;
-        }
-    </style>
 </head>
 
 <body>
@@ -42,42 +26,6 @@
     </label>
     <button type="submit">Criar Usuário</button>
 </form>
-
-<script>
-    function validarCPF(cpf) {
-        return /^\d{11}$/.test(cpf);
-    }
-
-    function validarSenhasEdicao(form) {
-        var senha1 = form.querySelector('input[name="password"]').value;
-        var senha2 = form.querySelector('input[name="passwordConfirm"]').value;
-        if (senha1 !== senha2) {
-            alert('As senhas não coincidem!');
-            return false;
-        }
-        var cpf = form.querySelector('input[name="cpf"]').value;
-        if (!validarCPF(cpf)) {
-            alert('O CPF deve conter exatamente 11 dígitos numéricos!');
-            return false;
-        }
-        return true;
-    }
-
-    function validarCPFeSenhas() {
-        var senha1 = document.getElementById('senha1').value;
-        var senha2 = document.getElementById('senha2').value;
-        if (senha1 !== senha2) {
-            alert('As senhas não coincidem!');
-            return false;
-        }
-        var cpf = document.querySelector('#formCriarUsuario input[name="cpf"]').value;
-        if (!validarCPF(cpf)) {
-            alert('O CPF deve conter exatamente 11 dígitos numéricos!');
-            return false;
-        }
-        return true;
-    }
-</script>
 
 <table>
     <thead>
