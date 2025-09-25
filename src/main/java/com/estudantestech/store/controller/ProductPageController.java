@@ -39,9 +39,8 @@ public class ProductPageController {
     @GetMapping("/cadastro")
     public String form(Model model){
         model.addAttribute("product", new Product());
-        return "criarproduto";
+        return "criarProduto";
     }
-
 
     //CADASTRO DE PRODUTOS
     @PostMapping("/cadastro/novo")
@@ -59,12 +58,6 @@ public class ProductPageController {
         return "redirect:/products";
     }
 
-
-
-
-
-
-
     //TELA DE EDITAR PRODUTO
     @GetMapping("/produtos/editar/{id}")
     public String mostrarFormularioDeEdicao(@PathVariable("id") Long id, Model model) {
@@ -73,24 +66,15 @@ public class ProductPageController {
             return "redirect:/produtos";
         }
         model.addAttribute("product", produtoOpt.get());
-        return "alterarproduto";
+        return "alterarProduto";
     }
 
     //EDITAR PRODUTO
-
     @PostMapping("/produtos/salvar")
     public String salvarProduto(@ModelAttribute("produto") Product product) {
         productRepository.save(product);
         return "redirect:/products";
 
     }
-
-
-
-
-
-
-
-
 
 }
