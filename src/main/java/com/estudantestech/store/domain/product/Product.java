@@ -23,12 +23,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idProduct;
     private String name;
-    private Integer stars;
+    private double stars;
 
-    @Column(length = 2000)
+    @Lob
     private String description;
     private Integer quantity;
-    private BigDecimal value;
+    private BigDecimal price;
     private boolean active = true;
 
     @CreationTimestamp
@@ -37,12 +37,12 @@ public class Product {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    public Product(String name, Integer stars, String description, Integer quantity, BigDecimal value, boolean active, Instant creationTimestamp, Instant updateTimestamp) {
+    public Product(String name, double stars, String description, Integer quantity, BigDecimal price, boolean active, Instant creationTimestamp, Instant updateTimestamp) {
         this.name = name;
         this.stars = stars;
         this.description = description;
         this.quantity = quantity;
-        this.value = value;
+        this.price = price;
         this.active = active;
     }
 
@@ -52,6 +52,4 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ImagesProduct> imagesProducts = new ArrayList<>();
-
-
 }
