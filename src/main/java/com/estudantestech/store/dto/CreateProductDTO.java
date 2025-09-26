@@ -12,7 +12,7 @@ public record CreateProductDTO(Long id,
                                @NotNull(message = "campo obrigatorio") double stars,
                                @NotBlank(message = "campo obrigatorio") String description,
                                @NotNull (message = "campo obrigatorio") Integer quantity,
-                               @NotNull (message = "campo obrigatorio") BigDecimal value,
+                               @NotNull (message = "campo obrigatorio") BigDecimal price,
                                boolean active) {
 
     public Product CreateProduct(){
@@ -21,7 +21,7 @@ public record CreateProductDTO(Long id,
         product.setStars(this.stars);
         product.setDescription(this.description);
         product.setQuantity(this.quantity);
-        product.setPrice(this.value);
+        product.setPrice(this.price);
         product.setActive(true);
         return product;
     }

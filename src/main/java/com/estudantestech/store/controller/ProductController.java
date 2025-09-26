@@ -120,7 +120,7 @@ public ResponseEntity<CreateProductDTO> save(@RequestBody @Valid CreateProductDT
         product.setStars(productDTO.stars());
         product.setDescription(productDTO.description());
         product.setQuantity(productDTO.quantity());
-        product.setPrice(productDTO.value());
+        product.setPrice(productDTO.price());
         product.setActive(productDTO.active());
         service.update(product);
 

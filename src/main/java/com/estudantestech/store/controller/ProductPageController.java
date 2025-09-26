@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import com.estudantestech.store.domain.images.ImagesProduct;
 
 
 @Controller
@@ -65,7 +66,19 @@ public class ProductPageController {
         if (!produtoOpt.isPresent()) {
             return "redirect:/produtos";
         }
-        model.addAttribute("product", produtoOpt.get());
+        Product produto = produtoOpt.get();
+
+        // Busca o id da imagem principal do produto
+        Long imageId = null;
+        if (produto.getImagesProducts() != null && !produto.getImagesProducts().isEmpty()) {
+            ImagesProduct principal = produto.getImagesProducts().stream()
+                .filter(ImagesProduct::isPrincipal)
+                .findFirst()
+                .orElse(produto.getImagesProducts().get(0));
+            imageId = principal.getId();
+        }
+        model.addAttribute("product", produto);
+        model.addAttribute("imageId", imageId);
         return "alterarProduto";
     }
 

@@ -37,26 +37,16 @@
                 </div>
                 <input class="btn-foto" type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg" />
                 <button type="submit" class="btn-submit">EDITAR PRODUTO</button>
-                <button class="btn-cancel">CANCELAR</button>
+                <button class="btn-cancel" type="button">CANCELAR</button>
             </form>
 
         </div>
         <div class="image-section">
-            <div class="image-placeholder">
-                <div class="sky">
-                    <div class="sun"></div>
-                    <div class="cloud cloud1"></div>
-                    <div class="cloud cloud2"></div>
-                </div>
-                <div class="mountains">
-                    <div class="mountain1"></div>
-                    <div class="mountain2"></div>
-                </div>
-                <div class="grass"></div>
-            </div>
+            <img id="preview-img" th:if="${imageId}" th:src="@{'/images/' + ${imageId}}" />
         </div>
     </div>
 </main>
 
+<script th:src="@{/js/alterarProduto.js}"></script>
 </body>
 </html>
