@@ -25,7 +25,7 @@ public class Product {
     private String name;
     private double stars;
 
-    @Lob
+    @Column(length = 2000)
     private String description;
     private Integer quantity;
     private BigDecimal price;

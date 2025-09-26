@@ -21,7 +21,7 @@
                 </div>
                 <div class="form-group">
                     <label for="preco">PREÇO:</label>
-                    <input type="number" id="preco" placeholder="preco" th:field="*{value}">
+                    <input type="number" id="preco" placeholder="preco" step="0.01" th:field="*{price}">
                 </div>
                 <div class="form-group">
                     <label for="estoque">EM ESTOQUE:</label>
@@ -33,10 +33,10 @@
                 </div>
                 <div class="form-group">
                     <label for="avaliacao">AVALIAÇÃO:</label>
-                    <input type="number" id="avaliacao" placeholder="avaliacao">
+                    <input type="number" id="avaliacao" placeholder="avaliacao" step="0.1" th:field="*{stars}">
                 </div>
                 <input class="btn-foto" type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg" />
-                <button type="submit" class="btn-submit">ADICIONAR PRODUTO</button>
+                <button type="submit" class="btn-submit">EDITAR PRODUTO</button>
                 <button class="btn-cancel">CANCELAR</button>
             </form>
 

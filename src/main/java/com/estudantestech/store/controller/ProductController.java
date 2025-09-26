@@ -48,7 +48,7 @@ public ResponseEntity<CreateProductDTO> save(@RequestBody @Valid CreateProductDT
             savedProduct.getStars(),
             savedProduct.getDescription(),
             savedProduct.getQuantity(),
-            savedProduct.getValue(),
+            savedProduct.getPrice(),
             savedProduct.isActive()
     );
 
@@ -67,7 +67,7 @@ public ResponseEntity<CreateProductDTO> save(@RequestBody @Valid CreateProductDT
                     product.getStars(),
                     product.getDescription(),
                     product.getQuantity(),
-                    product.getValue(),
+                    product.getPrice(),
                     product.isActive());
             return ResponseEntity.ok(dto);
         }
@@ -85,7 +85,6 @@ public ResponseEntity<CreateProductDTO> save(@RequestBody @Valid CreateProductDT
         }
 
         service.delete(productOptional.get());
-
         return ResponseEntity.noContent().build();
     }
 
@@ -100,7 +99,7 @@ public ResponseEntity<CreateProductDTO> save(@RequestBody @Valid CreateProductDT
                         product.getStars(),
                         product.getDescription(),
                         product.getQuantity(),
-                        product.getValue(),
+                        product.getPrice(),
                         product.isActive()
                         )
                 ).collect(Collectors.toList());
@@ -121,7 +120,7 @@ public ResponseEntity<CreateProductDTO> save(@RequestBody @Valid CreateProductDT
         product.setStars(productDTO.stars());
         product.setDescription(productDTO.description());
         product.setQuantity(productDTO.quantity());
-        product.setValue(productDTO.value());
+        product.setPrice(productDTO.value());
         product.setActive(productDTO.active());
         service.update(product);
 
