@@ -43,7 +43,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="p : ${products}">
+        <tr th:each="p : ${products}"
+            th:attr="data-description=${p.description},data-imageid=${#lists.isEmpty(p.imagesProducts) ? '' : (p.imagesProducts.?[principal].isEmpty() ? p.imagesProducts[0].id : p.imagesProducts.?[principal][0].id)}">
             <td th:text="${p.idProduct}"></td>
             <td th:text="${p.name}"></td>
             <td th:text="${p.quantity}"></td>
@@ -66,6 +67,19 @@
         </tbody>
     </table>
 </main>
+
+<div id="modal-visualizar" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-modal" id="close-modal-visualizar">&times;</span>
+        <h3 id="modal-produto-nome"></h3>
+        <img id="modal-produto-img" style="max-width:200px;max-height:200px;margin:10px 0;"/>
+        <p><strong>Descrição:</strong> <span id="modal-produto-desc"></span></p>
+        <p><strong>Preço:</strong> R$ <span id="modal-produto-preco"></span></p>
+        <p><strong>Quantidade:</strong> <span id="modal-produto-quantidade"></span></p>
+        <p><strong>Status:</strong> <span id="modal-produto-status"></span></p>
+        <button id="btn-fechar-modal" class="btn-cancel">Fechar</button>
+    </div>
+</div>
 
 </body>
 </html>
