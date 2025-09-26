@@ -1,10 +1,12 @@
 spring.application.name=Estudantes-Tech
 
-spring.datasource.url=
-spring.datasource.username=
-spring.datasource.password=
+spring.datasource.url="SEU_URL_DE_CONEXAO_AQUI"
+spring.datasource.username="SEU_USUARIO_AQUI"
+spring.datasource.password="SUA_SENHA_AQUI"
 spring.datasource.driver-class-name=org.postgresql.Driver
 
 spring.jpa.show-sql=true
-
 spring.jpa.hibernate.ddl-auto=update
+
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
