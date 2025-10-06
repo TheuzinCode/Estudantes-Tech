@@ -59,13 +59,7 @@
                 <button type="submit">Salvar</button>
             </td>
         </form>
-        <form th:action="@{'/usuarios/excluir/' + ${user.userId}}" method="post" style="display:inline;">
-            <td colspan="6" style="text-align:right;">
-                <button type="submit"
-                        onclick="return confirm('Tem certeza que deseja excluir?');">Excluir
-                </button>
-            </td>
-        </form>
+
     </tr>
     </tbody>
 </table>
