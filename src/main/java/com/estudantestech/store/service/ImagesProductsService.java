@@ -37,7 +37,8 @@ public class ImagesProductsService {
     }
 
 
-    public Optional<ImagesProduct> getImagesProducts(Long id){
+
+    public Optional<ImagesProduct> getImagesProductsId(Long id){
         return imagesProductsRepository.findById(id);
     }
 
@@ -45,10 +46,16 @@ public class ImagesProductsService {
             imagesProductsRepository.delete(imagesProduct);
     }
 
-    public void update(ImagesProduct imagesProduct){
-        if (imagesProduct.getId() == null)
-            throw new IllegalArgumentException("Para atualizar, é necessario que o a imagem já esteja salvo na base");
-        imagesProductsRepository.save(imagesProduct);
+    public ImagesProduct updateImage(long imageId, MultipartFile file) throws IOException {
+
+        ImagesProduct imageToUpdate = imagesProductsRepository.findById(imageId)
+                .orElseThrow(() -> new IOException("Imagem com ID " + imageId + " não encontrada."));
+
+        imageToUpdate.setTipo(file.getContentType());
+        imageToUpdate.setDados(file.getBytes());
+
+        return imagesProductsRepository.save(imageToUpdate);
+
     }
 
 }

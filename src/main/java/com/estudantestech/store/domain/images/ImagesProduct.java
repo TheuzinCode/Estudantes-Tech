@@ -26,6 +26,7 @@ public class ImagesProduct {
     @ManyToOne
     @JoinColumn(name = "idProduct")
     private Product product;
+
     private boolean principal;
 
     public ImagesProduct() {

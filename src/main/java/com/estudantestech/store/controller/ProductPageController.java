@@ -2,9 +2,11 @@ package com.estudantestech.store.controller;
 
 import com.estudantestech.store.domain.product.Product;
 import com.estudantestech.store.dto.CreateProductDTO;
+import com.estudantestech.store.repositories.ImagesProductsRepository;
 import com.estudantestech.store.repositories.ProductRepository;
 import com.estudantestech.store.service.ImagesProductsService;
 import com.estudantestech.store.service.ProductService;
+import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import com.estudantestech.store.domain.images.ImagesProduct;
@@ -22,6 +25,9 @@ public class ProductPageController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ImagesProductsRepository imagesProductsRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -84,10 +90,22 @@ public class ProductPageController {
 
     //EDITAR PRODUTO
     @PostMapping("/produtos/salvar")
-    public String salvarProduto(@ModelAttribute("produto") Product product) {
-        productRepository.save(product);
-        return "redirect:/products";
+    public String editarProduto(@ModelAttribute("produto") Product product,
+                                @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+                                @RequestParam(value = "imageId", required = false) Long imageId){
 
+
+        try{
+            productRepository.save(product);
+            if ( imageFile != null && !imageFile.isEmpty() && imageId != null){
+                imagesProductsService.updateImage(imageId, imageFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "erro";
+        }
+
+        return "redirect:/products";
     }
 
 }

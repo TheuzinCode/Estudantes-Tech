@@ -14,6 +14,7 @@
             <h2>CADASTRAR PRODUTO</h2>
             <form th:action="@{/produtos/salvar}" method="post" th:object="${product}" enctype="multipart/form-data">
 
+                <input type="hidden" name="imageId" th:if="${imageId}" th:value="${imageId}" />
                 <input type="hidden" th:field="*{idProduct}" />
                 <div class="form-group">
                     <label for="nome">NOME DO PRODUTO:</label>

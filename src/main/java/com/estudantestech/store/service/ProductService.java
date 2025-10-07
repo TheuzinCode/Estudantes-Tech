@@ -1,5 +1,6 @@
 package com.estudantestech.store.service;
 
+import com.estudantestech.store.domain.images.ImagesProduct;
 import com.estudantestech.store.domain.product.Product;
 import com.estudantestech.store.repositories.ImagesProductsRepository;
 import com.estudantestech.store.repositories.ProductRepository;
@@ -21,32 +22,41 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    private final ImagesProductsRepository imagesProductsRepository;
+
    private final ImagesProductsService imagesProductsService;
 
-    public ProductService(ProductRepository productRepository, ImagesProductsService imagesProductsService){
+    public ProductService(ProductRepository productRepository, ImagesProductsRepository imagesProductsRepository, ImagesProductsService imagesProductsService){
         this.productRepository = productRepository;
+        this.imagesProductsRepository = imagesProductsRepository;
         this.imagesProductsService = imagesProductsService;
         ;
     }
 
 
-   /* public Product save(Product product){
-        productRepository.save(product);
-        return product;
-    }
 
-    */
-
-    public Product save(Product product, MultipartFile imageFile) throws IOException {
+    public Product save(Product product, MultipartFile file) throws IOException {
 
         Product savedProduct = productRepository.save(product);
 
-        if (!imageFile.isEmpty() && imageFile != null){
-            imagesProductsService.save(imageFile, product);
+        if (file.isEmpty() && file != null){
 
+            ImagesProduct imagesProduct = new ImagesProduct();
+
+            imagesProduct.setTipo(file.getContentType());
+            imagesProduct.setDados(file.getBytes());
+
+            imagesProduct.setProduct(product);
+            product.getImagesProducts().add(imagesProduct);
+
+            ImagesProduct images = imagesProductsRepository.save(imagesProduct);
+
+            images.setName("imagem " + images.getId());
         }
 
-        return savedProduct;
+
+
+        return productRepository.save(product);
     }
 
 
