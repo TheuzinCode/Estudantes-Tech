@@ -55,8 +55,9 @@
                 <div class="action-buttons">
                     <button class="btn-alterar"><a th:href="@{/produtos/editar/{id}(id=${p.idProduct})}"
                                                    class="btn-alterar">Alterar</a></button>
-                    <button class="btn-visualizar">Visualizar</button>
-                    <button class="btn-ativo" type="button"
+                    <button th:if="${isAdmin}" class="btn-visualizar" >Visualizar</button>
+                    <button th:if="${isAdmin}"
+                            class="btn-ativo" type="button"
                             th:data-id="${p.idProduct}"
                             th:data-active="${p.active}"
                             th:text="${p.active ? '✅ Ativo' : '❌ Inativo'}"
