@@ -44,7 +44,10 @@ public class ProductPageController {
 
     //PRIMEIRA TELA DE PRODUTOS
     @GetMapping("/products")
-    public String products(Model model, Authentication authentication, @RequestParam(required = false)String name) {
+    public String products(Model model,
+                           Authentication authentication,
+                           @RequestParam(required = false)String name) {
+
         User user = userRepository.findByEmail(authentication.getName());
         model.addAttribute("isAdmin", user.isAdmin());
 
@@ -77,12 +80,16 @@ public class ProductPageController {
 
     //TELA DE EDITAR PRODUTO
     @GetMapping("/produtos/editar/{id}")
-    public String mostrarFormularioDeEdicao(@PathVariable("id") Long id, Model model) {
+    public String mostrarFormularioDeEdicao(@PathVariable("id") Long id, Authentication authentication, Model model) {
         Optional<Product> produtoOpt = productRepository.findById(id);
         if (!produtoOpt.isPresent()) {
             return "redirect:/produtos";
         }
         Product produto = produtoOpt.get();
+
+        User user = userRepository.findByEmail(authentication.getName());
+        model.addAttribute("isAdmin", user.isAdmin());
+
 
         // Busca o id da imagem principal do produto
         Long imageId = null;
@@ -101,15 +108,30 @@ public class ProductPageController {
     //EDITAR PRODUTO
     @PostMapping("/produtos/salvar")
     public String editarProduto(@ModelAttribute("produto") Product product,
+                                Authentication authentication,
+                                Model model,
                                 @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                                 @RequestParam(value = "imageId", required = false) Long imageId){
 
 
+        User user = userRepository.findByEmail(authentication.getName());
+        model.addAttribute("isAdmin", user.isAdmin());
+
         try{
-            productRepository.save(product);
-            if ( imageFile != null && !imageFile.isEmpty() && imageId != null){
-                imagesProductsService.updateImage(imageId, imageFile);
+
+            if (user.isAdmin()){
+                productRepository.save(product);
+                if ( imageFile != null && !imageFile.isEmpty() && imageId != null){
+                    imagesProductsService.updateImage(imageId, imageFile);
+                }
+            }else {
+                Product productFromDB = productRepository.findById(product.getIdProduct())
+                        .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+                productFromDB.setQuantity(product.getQuantity());
+               productRepository.save(productFromDB);
             }
+
+
         } catch (IOException e) {
             e.printStackTrace();
             return "erro";
