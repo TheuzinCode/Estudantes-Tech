@@ -11,18 +11,18 @@
 <main class="main-container-cadastro">
     <div class="cadastro-box">
         <div class="form-section">
-            <h2>CADASTRAR PRODUTO</h2>
+            <h2>ALTERAR PRODUTO</h2>
             <form th:action="@{/produtos/salvar}" method="post" th:object="${product}" enctype="multipart/form-data">
 
                 <input type="hidden" name="imageId" th:if="${imageId}" th:value="${imageId}" />
                 <input type="hidden" th:field="*{idProduct}" />
                 <div class="form-group">
                     <label for="nome">NOME DO PRODUTO:</label>
-                    <input type="text" id="nome" placeholder="nome" th:field="*{name}">
+                    <input th:disabled="${!isAdmin}" type="text" id="nome" placeholder="nome" th:field="*{name}">
                 </div>
                 <div class="form-group">
                     <label for="preco">PREÇO:</label>
-                    <input type="number" id="preco" placeholder="preco" step="0.01" th:field="*{price}">
+                    <input th:disabled="${!isAdmin}" type="number" id="preco" placeholder="preco" step="0.01" th:field="*{price}">
                 </div>
                 <div class="form-group">
                     <label for="estoque">EM ESTOQUE:</label>
@@ -30,13 +30,13 @@
                 </div>
                 <div class="form-group">
                     <label for="descricao">DESCRIÇÃO DETALHADA:</label>
-                    <textarea id="descricao" rows="4" placeholder="descricao" th:field="*{description}"></textarea>
+                    <textarea th:disabled="${!isAdmin}" id="descricao" rows="4" placeholder="descricao" th:field="*{description}"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="avaliacao">AVALIAÇÃO:</label>
                     <input type="number" id="avaliacao" placeholder="avaliacao" step="0.1" th:field="*{stars}">
                 </div>
-                <input class="btn-foto" type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg" />
+                <input th:disabled="${!isAdmin}" class="btn-foto" type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg" />
                 <button type="submit" class="btn-submit">EDITAR PRODUTO</button>
                 <button class="btn-cancel" type="button">CANCELAR</button>
             </form>
