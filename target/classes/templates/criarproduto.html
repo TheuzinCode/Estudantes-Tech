@@ -34,9 +34,10 @@
                     <label for="avaliacao">AVALIAÇÃO:</label>
                     <input type="number" id="avaliacao" placeholder="avaliacao" step="0.1" th:field="*{stars}">
                 </div>
+                <input type="file" accept="image/*" id="picture_input" name="imageFile" multiple style="display:none;">
                 <button type="button" class="btn-submit" onclick="openPopup()">ADICIONAR IMAGENS</button>
                 <button type="submit" class="btn-submit">ADICIONAR PRODUTO</button>
-                <button class="btn-cancel" type="button">CANCELAR</button>
+                <button type="button" class="btn-cancel">CANCELAR</button>
             </form>
         </div>
         <div class="image-section">
@@ -45,8 +46,13 @@
     </div>
 
     <div class="popup" id="popup">
-        Adicionar imagens
-        <button class="close-btn" onclick="closePopup()">Ok</button>
+        <label class="picture" for="picture_input">
+            <span class="picture_image"></span>
+        </label>
+        <span id="textNextImage"></span>
+
+        <button class="btn-submit">Salvar</button>
+        <button class="btn-cancel" onclick="closePopup()">Cancelar</button>
     </div>
 
 </main>

@@ -65,12 +65,16 @@ public class ProductPageController {
     //CADASTRO DE PRODUTOS
     @PostMapping("/cadastro/novo")
     public String salvarProduto(@ModelAttribute("produto") Product product,
-                                @RequestParam("imageFile") MultipartFile imageFile) {
+                                @RequestParam("imageFile") MultipartFile[] imageFile) {
 
        try {
            Product saveProduct = productRepository.save(product);
-           if (!imageFile.isEmpty()) {
-               imagesProductsService.save(imageFile, saveProduct);
+           if (imageFile != null && imageFile.length > 0) {
+               for (MultipartFile file : imageFile) {
+                   if (!file.isEmpty()) {
+                       imagesProductsService.save(file, saveProduct);
+                   }
+               }
            }
        }catch (Exception e){
            e.printStackTrace();

@@ -123,6 +123,9 @@
     padding: 20px;
     visibility: hidden;
     transition: transform 0.3s, visibility 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .open-popup {
     visibility: visible;
@@ -134,4 +137,44 @@
 .popup p {
     font-size: 20px;
     padding-block: 10px;
+}
+
+#picture_input {
+    display: none;
+}
+
+.picture {
+    width: 250px;
+    height: 250px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    border: 2px dashed #aaa;
+    cursor: pointer;
+    font-family: sans-serif;
+    margin-bottom: 20px;
+    transition: color 300ms ease-in-out, background 300ms ease-in-out;
+}
+
+.picture:hover {
+    color: #777;
+    background: #ccc;
+}
+
+#textNextImage {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.picture_img {
+    max-width: 80px;
+    max-height: 80px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
