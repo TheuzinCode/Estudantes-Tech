@@ -34,7 +34,7 @@
                     <label for="avaliacao">AVALIAÇÃO:</label>
                     <input type="number" id="avaliacao" placeholder="avaliacao" step="0.1" th:field="*{stars}">
                 </div>
-                <input class="btn-foto" type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg"/>
+                <button type="button" class="btn-submit" onclick="openPopup()">ADICIONAR IMAGENS</button>
                 <button type="submit" class="btn-submit">ADICIONAR PRODUTO</button>
                 <button class="btn-cancel" type="button">CANCELAR</button>
             </form>
@@ -43,6 +43,12 @@
             <img id="preview-img"/>
         </div>
     </div>
+
+    <div class="popup" id="popup">
+        Adicionar imagens
+        <button class="close-btn" onclick="closePopup()">Ok</button>
+    </div>
+
 </main>
 
 <script th:src="@{/js/criarProduto.js}"></script>

@@ -29,26 +29,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 })
 
-// Função para pré-visualizar a imagem selecionada antes do upload
-document.getElementById('imageFile').addEventListener('change', function(event) {
-    const file = event.target.files[0]
-    const preview = document.getElementById('preview-img')
-
-    if (file) {
-        const reader = new FileReader()
-        reader.onload = function(e) {
-            preview.src = e.target.result
-            preview.style.display = 'block'
-        }
-        reader.readAsDataURL(file)
-
-    } else {
-        preview.src = ''
-        preview.style.display = 'none'
-    }
-})
-
 // Evento para o botão 'cancelar' que redireciona para a página de produtos
 document.querySelector('.btn-cancel').addEventListener('click', function() {
     window.location.href = '/products'
 })
+
+let popup = document.getElementById("popup");
+
+function openPopup() {
+    popup.classList.add("open-popup");
+}
+
+function closePopup() {
+    popup.classList.remove("open-popup");
+}

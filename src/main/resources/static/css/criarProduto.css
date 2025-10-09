@@ -109,3 +109,29 @@
     max-height:350px;
     display:none;
 }
+
+.popup {
+    background: #fff;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    padding: 20px;
+    visibility: hidden;
+    transition: transform 0.3s, visibility 0.3s;
+}
+.open-popup {
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+.popup h2 {
+    font-size: 40px;
+}
+.popup p {
+    font-size: 20px;
+    padding-block: 10px;
+}
