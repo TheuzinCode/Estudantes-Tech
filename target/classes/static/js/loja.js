@@ -35,4 +35,26 @@ document.addEventListener('DOMContentLoaded', function () {
             closeCart();
         }
     });
+
+    // Inicializa render do carrinho
+    if (window.Cart && typeof window.Cart.init === 'function') {
+        window.Cart.init();
+    }
+
+    // Botões "Comprar" dentro da vitrine
+    const grid = document.querySelector('.product-grid');
+    if (grid) {
+        grid.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-buy');
+            if (!btn) return;
+            const id = btn.getAttribute('data-id');
+            const name = btn.getAttribute('data-name');
+            const price = btn.getAttribute('data-price');
+            const imageId = btn.getAttribute('data-imageid');
+            if (window.Cart) {
+                window.Cart.addItem({ id, name, price, imageId, qty: 1 });
+                openCart();
+            }
+        });
+    }
 });

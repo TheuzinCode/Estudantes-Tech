@@ -33,7 +33,14 @@
                     <div class="product-info">
                         <h4 th:text="${p.name}">Produto</h4>
                         <p class="price">R$ <span th:text="${p.price}">0,00</span></p>
-                        <a class="btn-details" th:href="@{/loja/produto/{id}(id=${p.idProduct})}">Detalhes</a>
+                        <div class="product-actions">
+                            <a class="btn-details" th:href="@{/loja/produto/{id}(id=${p.idProduct})}">Detalhes</a>
+                            <button type="button" class="btn-buy"
+                                    th:attr="data-id=${p.idProduct},
+                                              data-name=${p.name},
+                                              data-price=${p.price},
+                                              data-imageid=${imgId}">Comprar</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,16 +54,17 @@
             <h3>Carrinho</h3>
             <button type="button" class="cart-close" id="cart-close" aria-label="Fechar carrinho">&times;</button>
         </header>
-        <div class="cart-body">
+        <div class="cart-body" id="cart-body">
             <p>Seu carrinho está vazio.</p>
         </div>
         <footer class="cart-footer">
-            <button type="button" class="btn-details" disabled>Ir para o checkout</button>
+            <div class="subtotal">Subtotal: R$ <span id="cart-subtotal">0,00</span></div>
         </footer>
     </aside>
 
     <footer></footer>
 
+    <script th:src="@{/js/carrinho.js}"></script>
     <script th:src="@{/js/loja.js}"></script>
 </body>
 </html>

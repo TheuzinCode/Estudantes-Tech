@@ -159,3 +159,21 @@ body.cart-open {
 #open-cart {
     cursor: pointer;
 }
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+.cart-item img { width: 64px; height: 64px; object-fit: cover; border-radius: 6px; }
+.ci-info { display: flex; flex-direction: column; gap: 4px; }
+.ci-name { font-weight: 600; color: #333; }
+.ci-price { color: #28a79b; font-weight: 700; }
+.ci-unit { color: #666; font-size: 12px; }
+.ci-actions { display: flex; align-items: center; gap: 6px; }
+.ci-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid #ddd; background: #f8f8f8; cursor: pointer; }
+.ci-qty { min-width: 20px; text-align: center; }
+.ci-remove { background: transparent; border: none; font-size: 18px; cursor: pointer; color: #c33; }
