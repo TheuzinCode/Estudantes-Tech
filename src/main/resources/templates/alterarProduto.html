@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-group">
                     <label for="avaliacao">AVALIAÇÃO:</label>
-                    <input type="number" id="avaliacao" placeholder="avaliacao" step="0.1" th:field="*{stars}">
+                    <input th:disabled="${!isAdmin}" type="number" id="avaliacao" placeholder="avaliacao" step="0.1" th:field="*{stars}">
                 </div>
                 <input th:disabled="${!isAdmin}" class="btn-foto" type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg" />
                 <button type="submit" class="btn-submit">EDITAR PRODUTO</button>
