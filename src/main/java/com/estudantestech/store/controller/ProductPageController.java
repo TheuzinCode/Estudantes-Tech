@@ -1,16 +1,14 @@
 package com.estudantestech.store.controller;
 
+import com.estudantestech.store.domain.images.ImagesProduct;
 import com.estudantestech.store.domain.product.Product;
 import com.estudantestech.store.domain.user.User;
-import com.estudantestech.store.dto.CreateProductDTO;
 import com.estudantestech.store.repositories.ImagesProductsRepository;
 import com.estudantestech.store.repositories.ProductRepository;
 import com.estudantestech.store.repositories.UserRepository;
 import com.estudantestech.store.service.ImagesProductsService;
 import com.estudantestech.store.service.ProductService;
-import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
-import com.estudantestech.store.domain.images.ImagesProduct;
-
 
 @Controller
 public class ProductPageController {
@@ -142,6 +137,12 @@ public class ProductPageController {
         }
 
         return "redirect:/products";
+    }
+    
+    @GetMapping("/loja")
+    public String loja(Model model, @RequestParam(required = false) String name) {
+        model.addAttribute("products", productService.search(name));
+        return "loja";
     }
 
 }

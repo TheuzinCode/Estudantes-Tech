@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loja</title>
+    <link rel="stylesheet" th:href="@{/css/loja.css}">
 </head>
 <body>
-    essa é a loja
+    <header class="cabecalho">
+        <img th:src="@{/img/logo.png}" width="50" height="50" alt="logo">
+        <div>PETMATCH</div>
+        <div class="right-icons">
+            <img th:src="@{/img/perfil.png}" width="30" height="30" alt="perfil">
+            <img th:src="@{/img/carrinho.png}" width="30" height="30" alt="carrinho">
+        </div>
+    </header>
+
+    <main>
+        <section class="store-container">
+            <div class="product-grid">
+                <div class="product-card"
+                     th:each="p : ${products}"
+                     th:with="imgList=${p.imagesProducts},
+                              principalList=${imgList.?[principal]},
+                              imgId=${#lists.isEmpty(imgList) ? null : ( #lists.isEmpty(principalList) ? imgList[0].id : principalList[0].id)}">
+
+                    <div class="product-image">
+                        <img th:if="${imgId != null}" th:src="@{/images/{id}(id=${imgId})}" alt="Imagem do produto">
+                        <img th:if="${imgId == null}" th:src="@{/img/logo.png}" alt="Sem imagem">
+                    </div>
+
+                    <div class="product-info">
+                        <h4 th:text="${p.name}">Produto</h4>
+                        <p class="price">R$ <span th:text="${p.price}">0,00</span></p>
+                        <button type="button" class="btn-details">Detalhes</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer></footer>
+
+    <script th:src="@{/js/loja.js}"></script>
 </body>
 </html>
