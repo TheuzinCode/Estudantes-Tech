@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const descricao = document.getElementById('descricao').value
             const avaliacao = document.getElementById('avaliacao').value
 
+            if (avaliacao) {
+                avaliacao = avaliacao.trim().replace(',', '.');
+            }
+
             const regexAvaliacao = /^(?:[0-4](?:\.5)?|5)$/
 
             if (nome.length > 200) {
