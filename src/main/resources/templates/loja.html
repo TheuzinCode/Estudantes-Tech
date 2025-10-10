@@ -8,11 +8,11 @@
 </head>
 <body>
     <header class="cabecalho">
-        <img th:src="@{/img/logo.png}" width="50" height="50" alt="logo">
-        <div>PETMATCH</div>
+        <img th:src="@{/img/logo.png}" width="45" height="45" alt="logo">
+        <div>PETSHOP</div>
         <div class="right-icons">
             <img th:src="@{/img/perfil.png}" width="30" height="30" alt="perfil">
-            <img th:src="@{/img/carrinho.png}" width="30" height="30" alt="carrinho">
+            <img th:src="@{/img/carrinho.png}" width="30" height="30" alt="carrinho" id="open-cart">
         </div>
     </header>
 
@@ -39,6 +39,21 @@
             </div>
         </section>
     </main>
+
+    <!-- Cart drawer -->
+    <div class="cart-backdrop" id="cart-backdrop" aria-hidden="true"></div>
+    <aside class="cart-sidebar" id="cart-sidebar" aria-hidden="true" aria-label="Carrinho de compras">
+        <header class="cart-header">
+            <h3>Carrinho</h3>
+            <button type="button" class="cart-close" id="cart-close" aria-label="Fechar carrinho">&times;</button>
+        </header>
+        <div class="cart-body">
+            <p>Seu carrinho está vazio.</p>
+        </div>
+        <footer class="cart-footer">
+            <button type="button" class="btn-details" disabled>Ir para o checkout</button>
+        </footer>
+    </aside>
 
     <footer></footer>
 
