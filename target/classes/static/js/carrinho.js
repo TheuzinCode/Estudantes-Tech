@@ -1,14 +1,21 @@
 (function(){
     const STORAGE_KEY = 'cart_v1'
+    const SHIPPING_KEY = 'cart_shipping_v1'
+
+    const SHIPPING_PRICES = {
+        economico: 5,
+        expresso: 10,
+        premium: 15
+    }
 
     function load (){
         try {
-            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { items: [] }
+            const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { items: [] }
+            if (!parsed.items) parsed.items = []
+            return parsed
         }
         catch {
-            return {
-                items: []
-            }
+            return { items: [] }
         }
     }
 
@@ -16,10 +23,21 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
     }
 
+    function loadShipping(){
+        try {
+            const m = localStorage.getItem(SHIPPING_KEY)
+            return m && (m in SHIPPING_PRICES) ? m : 'economico'
+        } catch { return 'economico' }
+    }
+
+    function saveShipping(method){
+        if (!(method in SHIPPING_PRICES)) return
+        localStorage.setItem(SHIPPING_KEY, method)
+    }
+
     function toNumber (v){
         if (typeof v === 'number') return v
         if (typeof v === 'string') return parseFloat(v.replace(',', '.')) || 0
-
         return 0;
     }
 
@@ -34,8 +52,16 @@
         }
     }
 
-    function subtotal (state){
+    function itemsSubtotal (state){
         return state.items.reduce((sum, it) => sum + toNumber(it.price) * it.qty, 0)
+    }
+
+    function shippingValue(method){
+        return SHIPPING_PRICES[method] || 0
+    }
+
+    function cartTotal(state, method){
+        return itemsSubtotal(state) + shippingValue(method)
     }
 
     function findIndex (items, id){
@@ -96,6 +122,24 @@
         }
     }
 
+    function ensureShippingControls(){
+        // Sync select with saved method and attach change handler once
+        const sel = document.getElementById('cart-shipping')
+        if (!sel) return
+
+        const current = loadShipping()
+        if (sel.value !== current) sel.value = current
+
+        if (!sel.dataset.bound){
+            sel.addEventListener('change', function(){
+                const method = sel.value
+                saveShipping(method)
+                render()
+            })
+            sel.dataset.bound = '1'
+        }
+    }
+
     function renderItem (it){
         const imgSrc = it.imageId ? `/images/${encodeURIComponent(it.imageId)}` : '/img/logo.png'
         const line = toNumber(it.price) * it.qty
@@ -125,15 +169,19 @@
         if (!body || !sub) return
 
         const state = load()
+        const method = loadShipping()
 
         if (!state.items.length){
             body.innerHTML = '<p>Seu carrinho está vazio.</p>'
             sub.textContent = '0,00';
+            // still sync select visual state
+            ensureShippingControls()
             return
         }
 
         body.innerHTML = state.items.map(renderItem).join('')
-        sub.textContent = formatBRL(subtotal(state))
+        sub.textContent = formatBRL(cartTotal(state, method))
+        ensureShippingControls()
     }
 
     function attach (){
@@ -158,6 +206,8 @@
     }
 
     function init (){
+        // initialize shipping controls if present
+        ensureShippingControls()
         render()
         attach()
     }

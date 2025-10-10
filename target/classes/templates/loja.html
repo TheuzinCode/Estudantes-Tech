@@ -58,6 +58,15 @@
             <p>Seu carrinho está vazio.</p>
         </div>
         <footer class="cart-footer">
+            <!-- Added shipping controls above subtotal -->
+            <div class="shipping-controls" style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+                <input type="text" id="cart-cep" placeholder="CEP" style="flex:1 1 0; min-width:120px;"/>
+                <select id="cart-shipping" style="flex:1 1 0; min-width:180px;">
+                    <option value="economico">Frete Econômico - $5</option>
+                    <option value="expresso">Frete Expresso - $10</option>
+                    <option value="premium">Frete Premium - $15</option>
+                </select>
+            </div>
             <div class="subtotal">Subtotal: R$ <span id="cart-subtotal">0,00</span></div>
         </footer>
     </aside>
