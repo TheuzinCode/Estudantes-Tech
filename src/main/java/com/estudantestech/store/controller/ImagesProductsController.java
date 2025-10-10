@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping
 public class ImagesProductsController {
@@ -39,6 +41,16 @@ public class ImagesProductsController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(mediaType);
         return new ResponseEntity<>(image.getDados(), headers, HttpStatus.OK);
+    }
+
+    // retorna somente os IDs das imagens de um produto
+    @GetMapping("/api/products/{productId}/images/ids")
+    public ResponseEntity<List<Long>> getImageIdsByProduct(@PathVariable Long productId) {
+        List<Long> ids = imagesProductsRepository.findByProduct_IdProduct(productId)
+                .stream()
+                .map(ImagesProduct::getId)
+                .toList();
+        return ResponseEntity.ok(ids);
     }
 
 }

@@ -191,3 +191,35 @@ body {
     font-size: 2rem;
     cursor: pointer;
 }
+
+#modal-produto-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+#modal-produto-img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+#carousel-prev, #carousel-next {
+    background: #e5f6f4;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 2rem;
+    color: #28a79b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+#carousel-prev:hover, #carousel-next:hover {
+    background: #28a79b;
+    color: #fff;
+}

@@ -44,7 +44,9 @@
         </thead>
         <tbody>
         <tr th:each="p : ${products}"
-            th:attr="data-description=${p.description},data-imageid=${#lists.isEmpty(p.imagesProducts) ? '' : (p.imagesProducts.?[principal].isEmpty() ? p.imagesProducts[0].id : p.imagesProducts.?[principal][0].id)}">
+            th:attr="data-productid=${p.idProduct},
+                     data-description=${p.description},
+                     data-imageids=${#lists.isEmpty(p.imagesProducts) ? '' : #strings.listJoin(p.imagesProducts.![id], ',')}">
             <td th:text="${p.idProduct}"></td>
             <td th:text="${p.name}"></td>
             <td th:text="${p.quantity}"></td>
@@ -73,7 +75,11 @@
     <div class="modal-content">
         <span class="close-modal" id="close-modal-visualizar">&times;</span>
         <h3 id="modal-produto-nome"></h3>
-        <img id="modal-produto-img" style="max-width:200px;max-height:200px;margin:10px 0;"/>
+        <div id="modal-produto-carousel" style="display:flex;align-items:center;gap:10px;margin:10px 0;">
+            <button id="carousel-prev" type="button" style="font-size:2rem;">&#60;</button>
+            <img id="modal-produto-img" style="max-width:200px;max-height:200px;"/>
+            <button id="carousel-next" type="button" style="font-size:2rem;">&#62;</button>
+        </div>
         <p><strong>Descrição:</strong> <span id="modal-produto-desc"></span></p>
         <p><strong>Preço:</strong> R$ <span id="modal-produto-preco"></span></p>
         <p><strong>Quantidade:</strong> <span id="modal-produto-quantidade"></span></p>
