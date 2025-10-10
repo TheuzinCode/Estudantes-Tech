@@ -138,11 +138,32 @@ public class ProductPageController {
 
         return "redirect:/products";
     }
-    
+
     @GetMapping("/loja")
     public String loja(Model model, @RequestParam(required = false) String name) {
         model.addAttribute("products", productService.search(name));
         return "loja";
+    }
+
+    // Página de detalhes do produto na loja
+    @GetMapping("/loja/produto/{id}")
+    public String lojaProduto(@PathVariable("id") Long id, Model model) {
+        Product produto = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        Long principalId = null;
+        if (produto.getImagesProducts() != null && !produto.getImagesProducts().isEmpty()) {
+            ImagesProduct principal = produto.getImagesProducts().stream()
+                    .filter(ImagesProduct::isPrincipal)
+                    .findFirst()
+                    .orElse(produto.getImagesProducts().get(0));
+            principalId = principal.getId();
+        }
+
+        model.addAttribute("product", produto);
+        model.addAttribute("principalImageId", principalId);
+        model.addAttribute("imageIds", produto.getImagesProducts().stream().map(ImagesProduct::getId).toList());
+        return "lojaProduto";
     }
 
 }

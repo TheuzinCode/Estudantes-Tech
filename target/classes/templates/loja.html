@@ -33,7 +33,7 @@
                     <div class="product-info">
                         <h4 th:text="${p.name}">Produto</h4>
                         <p class="price">R$ <span th:text="${p.price}">0,00</span></p>
-                        <button type="button" class="btn-details">Detalhes</button>
+                        <a class="btn-details" th:href="@{/loja/produto/{id}(id=${p.idProduct})}">Detalhes</a>
                     </div>
                 </div>
             </div>

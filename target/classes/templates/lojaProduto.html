@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${product.name} + ' - Loja'">Produto - Loja</title>
+    <link rel="stylesheet" th:href="@{/css/lojaProduto.css}" />
+</head>
+<body>
+<header class="cabecalho">
+    <a class="brand" th:href="@{/loja}">PETMATCH</a>
+</header>
+
+<main class="product-detail">
+    <section class="gallery">
+        <div class="main-image">
+            <img id="produto-main-img"
+                 th:if="${principalImageId != null}"
+                 th:src="@{/images/{id}(id=${principalImageId})}"
+                 th:attr="data-image-id=${principalImageId}"
+                 alt="Imagem do produto"/>
+            <img th:if="${principalImageId == null}"
+                 th:src="@{/img/logo.png}"
+                 alt="Sem imagem"/>
+        </div>
+        <div class="thumbs" th:if="${imageIds != null and !#lists.isEmpty(imageIds)}">
+            <img th:each="imgId : ${imageIds}"
+                 th:src="@{/images/{id}(id=${imgId})}"
+                 th:attr="data-image-id=${imgId}"
+                 class="thumb"
+                 alt="Miniatura"/>
+        </div>
+    </section>
+
+    <section class="info">
+        <h1 th:text="${product.name}">Nome do Produto</h1>
+        <p class="price">Preço: R$ <span th:text="${product.price}">0,00</span></p>
+        <p><strong>Avaliação:</strong> <span th:text="${product.stars}">0</span></p>
+        <p><strong>Em estoque:</strong> <span th:text="${product.quantity}">0</span></p>
+        <p><strong>Status:</strong> <span th:text="${product.active} ? 'Ativo' : 'Inativo'">Ativo</span></p>
+        <div class="description">
+            <h3>Descrição</h3>
+            <p th:text="${product.description}">Descrição do produto...</p>
+        </div>
+        <div class="actions">
+            <button type="button" class="btn-buy">Comprar</button>
+            <a class="btn-secondary" th:href="@{/loja}">Voltar à loja</a>
+        </div>
+    </section>
+</main>
+
+<script th:src="@{/js/lojaProduto.js}"></script>
+</body>
+</html>
