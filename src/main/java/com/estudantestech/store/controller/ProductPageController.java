@@ -18,6 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 @Controller
 public class ProductPageController {
 
@@ -41,12 +46,18 @@ public class ProductPageController {
     @GetMapping("/products")
     public String products(Model model,
                            Authentication authentication,
-                           @RequestParam(required = false)String name) {
+                           @RequestParam(required = false) String name,
+                           @RequestParam(defaultValue = "0") int page) {
 
         User user = userRepository.findByEmail(authentication.getName());
         model.addAttribute("isAdmin", user.isAdmin());
 
-        model.addAttribute("products", productService.search(name));
+        Pageable pageable = PageRequest.of(Math.max(page, 0), 10, Sort.by(Sort.Direction.DESC, "idProduct"));
+        Page<Product> productPage = productService.searchPaged(name, pageable);
+
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("name", name);
+        model.addAttribute("products", productPage.getContent());
         return "produtos";
     }
 
@@ -71,7 +82,7 @@ public class ProductPageController {
                    }
                }
            }
-       }catch (Exception e){
+       } catch (Exception e){
            e.printStackTrace();
        }
         return "redirect:/products";
@@ -88,7 +99,6 @@ public class ProductPageController {
 
         User user = userRepository.findByEmail(authentication.getName());
         model.addAttribute("isAdmin", user.isAdmin());
-
 
         // Busca o id da imagem principal do produto
         Long imageId = null;

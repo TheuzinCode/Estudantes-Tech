@@ -69,6 +69,35 @@
         </tr>
         </tbody>
     </table>
+
+    <div class="pagination" th:if="${productPage != null}">
+        <div class="page-info" style="margin: 12px 0;">
+            <span th:if="${productPage.totalElements > 0}">
+                Página <strong th:text="${productPage.number + 1}">1</strong> de
+                <strong th:text="${productPage.totalPages}">1</strong>
+                — Total: <strong th:text="${productPage.totalElements}">0</strong>
+            </span>
+            <span th:if="${productPage.totalElements == 0}">Nenhum produto encontrado</span>
+        </div>
+        <div class="page-links" style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+            <a th:if="${productPage.hasPrevious()}"
+               th:href="@{/products(page=${productPage.number - 1}, name=${name})}">Anterior</a>
+
+            <span th:if="${productPage.totalPages > 1}"
+                  th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}">
+                <a th:if="${i != productPage.number}"
+                   th:text="${i + 1}"
+                   th:href="@{/products(page=${i}, name=${name})}"></a>
+                <span th:if="${i == productPage.number}"
+                      th:text="${i + 1}"
+                      class="current"
+                      style="font-weight:bold; text-decoration:underline;"></span>
+            </span>
+
+            <a th:if="${productPage.hasNext()}"
+               th:href="@{/products(page=${productPage.number + 1}, name=${name})}">Próxima</a>
+        </div>
+    </div>
 </main>
 
 <div id="modal-visualizar" class="modal" style="display:none;">
