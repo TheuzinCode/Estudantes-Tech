@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar</title>
+    <link rel="stylesheet" th:href="@{/css/entrar.css}">
+</head>
+<body>
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h1>Entrar no Petshop</h1>
+            <p>Preencha os campos abaixo</p>
+        </div>
+
+        <form class="login-form" id="loginForm" novalidate>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                <span class="error-message" id="passwordError"></span>
+            </div>
+
+            <button type="submit" class="login-btn">
+                <span class="btn-text">Sign In</span>
+                <div class="btn-loader">
+                    <div class="loader-dot"></div>
+                    <div class="loader-dot"></div>
+                    <div class="loader-dot"></div>
+                </div>
+            </button>
+        </form>
+
+        <div class="signup-link">
+            <p>Não tem conta?<a href="/criarConta">Criar conta</a></p>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/entrar.js}"></script>
+</body>
+</html>

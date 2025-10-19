@@ -46,7 +46,6 @@ Thumbs.db
 # -----------------------------
 # Se você armazenar dependências manualmente (não recomendado)
 /libs/
-/node_modules/   # se tiver frontend JS
 
 # -----------------------------
 # Configurações sensíveis
@@ -54,9 +53,6 @@ Thumbs.db
 # Variáveis de ambiente, senhas, chaves
 src/main/resources/application.properties
 src/main/resources/application.yml
-.env
-.env.local
-.env.*.local
 
 # -----------------------------
 # Arquivos gerados
