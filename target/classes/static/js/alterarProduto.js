@@ -1,4 +1,3 @@
-// Função que verifica o length do nome/descrição do produto
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form')
     const previewImg = document.getElementById('preview-img');
@@ -37,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
     }
 
-    // Evento para o botão 'cancelar' que redireciona para a página de produtos
     document.querySelector('.btn-cancel').addEventListener('click', function() {
         window.location.href = '/products'
     })
