@@ -75,6 +75,12 @@ body {
     font-family: inherit;
 }
 
+.form-group input[readonly] {
+    background: #ececec;
+    color: #555;
+    cursor: not-allowed;
+}
+
 .form-group input:focus {
     background: #ffffff;
     border-color: #1DB954;
