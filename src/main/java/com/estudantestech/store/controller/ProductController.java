@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.estudantestech.store.domain.product.Product;
-import com.estudantestech.store.dto.CreateProductDTO;
+import com.estudantestech.store.domain.product.CreateProductDTO;
 import com.estudantestech.store.repositories.ProductRepository;
 import com.estudantestech.store.service.ProductService;
 
@@ -29,20 +29,19 @@ public class ProductController {
 
     private final ProductService service;
 
-
     public ProductController(ProductService service){
         this.service = service;
     }
 
-@Autowired
-private ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
-@PostMapping
-public ResponseEntity<CreateProductDTO> save(@RequestBody @Valid CreateProductDTO productDto ){
-    Product productEntity = productDto.CreateProduct();
-    Product savedProduct = productRepository.save(productEntity);
+    @PostMapping
+    public ResponseEntity<CreateProductDTO> save(@RequestBody @Valid CreateProductDTO productDto ){
+        Product productEntity = productDto.CreateProduct();
+        Product savedProduct = productRepository.save(productEntity);
 
-    CreateProductDTO response = new CreateProductDTO(
+        CreateProductDTO response = new CreateProductDTO(
             savedProduct.getIdProduct(),
             savedProduct.getName(),
             savedProduct.getStars(),
@@ -50,10 +49,10 @@ public ResponseEntity<CreateProductDTO> save(@RequestBody @Valid CreateProductDT
             savedProduct.getQuantity(),
             savedProduct.getPrice(),
             savedProduct.isActive()
-    );
+        );
 
-    return ResponseEntity.ok(response);
-}
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("{id}")
     public ResponseEntity<CreateProductDTO> getProductById(@PathVariable("id") Long id){
@@ -94,15 +93,16 @@ public ResponseEntity<CreateProductDTO> save(@RequestBody @Valid CreateProductDT
         List<CreateProductDTO> list = result
                 .stream()
                 .map(product -> new CreateProductDTO(
-                        product.getIdProduct(),
-                        product.getName(),
-                        product.getStars(),
-                        product.getDescription(),
-                        product.getQuantity(),
-                        product.getPrice(),
-                        product.isActive()
-                        )
+                    product.getIdProduct(),
+                    product.getName(),
+                    product.getStars(),
+                    product.getDescription(),
+                    product.getQuantity(),
+                    product.getPrice(),
+                    product.isActive()
+                    )
                 ).collect(Collectors.toList());
+
         return ResponseEntity.ok(list);
     }
 

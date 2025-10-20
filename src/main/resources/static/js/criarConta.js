@@ -12,10 +12,13 @@ document.addEventListener('DOMContentLoaded', function(){
         const d = v.slice(0, 2)
         const m = v.slice(2, 4)
         const y = v.slice(4, 8)
+
         let out = ''
+
         if (d) out += d
         if (m) out += (out ? '/' : '') + m
         if (y) out += (out.length ? '/' : '') + y
+
         return out
     }
 

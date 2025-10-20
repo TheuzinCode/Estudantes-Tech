@@ -1,4 +1,4 @@
-package com.estudantestech.store.dto;
+package com.estudantestech.store.domain.product;
 
 import java.math.BigDecimal;
 

@@ -1,11 +1,9 @@
-package com.estudantestech.store.dto;
+package com.estudantestech.store.domain.product;
 
-import com.estudantestech.store.domain.product.Product;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public record CreateProductDTO(Long id,
                                @NotBlank(message = "campo obrigatorio") String name,

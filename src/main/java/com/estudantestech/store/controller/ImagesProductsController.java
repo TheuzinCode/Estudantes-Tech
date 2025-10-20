@@ -34,12 +34,15 @@ public class ImagesProductsController {
         if (image == null || image.getDados() == null) {
             return ResponseEntity.notFound().build();
         }
+
         MediaType mediaType = MediaType.IMAGE_JPEG;
         if ("image/png".equals(image.getTipo())) {
             mediaType = MediaType.IMAGE_PNG;
         }
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(mediaType);
+
         return new ResponseEntity<>(image.getDados(), headers, HttpStatus.OK);
     }
 
@@ -52,5 +55,4 @@ public class ImagesProductsController {
                 .toList();
         return ResponseEntity.ok(ids);
     }
-
 }

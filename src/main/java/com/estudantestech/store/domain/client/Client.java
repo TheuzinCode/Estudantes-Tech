@@ -23,7 +23,7 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID clientId;
 
-    private String nome;
+    private String name;
     private String email;
     private String cpf;
     private Date birthDate;
@@ -36,8 +36,8 @@ public class Client {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    public Client (String nome, String email, String cpf, Date birthDate, String gender, String password, Instant creationTimestamp, Instant updateTimestamp) {
-        this.nome = nome;
+    public Client (String name, String email, String cpf, Date birthDate, String gender, String password, Instant creationTimestamp, Instant updateTimestamp) {
+        this.name = name;
         this.email = email;
         this.cpf = cpf;
         this.birthDate = birthDate;

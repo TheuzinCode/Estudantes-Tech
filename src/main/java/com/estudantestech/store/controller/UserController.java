@@ -6,7 +6,6 @@ import com.estudantestech.store.domain.user.CreateUserDTO;
 import com.estudantestech.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -42,7 +42,6 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> listUsers() {
         var users = userService.listUsers();
-
         return ResponseEntity.ok(users);
     }
 
