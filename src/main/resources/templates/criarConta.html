@@ -32,7 +32,12 @@
 
             <div class="form-group">
                 <label for="gender">Gênero</label>
-                <input type="text" id="gender" name="gender">
+                <select id="gender" name="gender">
+                    <option value="" disabled selected>Selecione</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                    <option value="O">Outro</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -46,8 +51,8 @@
             </div>
 
             <div class="form-group">
-                <label for="endereco">Endereço</label>
-                <input type="text" id="endereco" name="endereco">
+                <label for="cep">CEP</label>
+                <input type="text" id="cep" name="cep">
             </div>
 
             <div class="form-group">
@@ -66,7 +71,7 @@
         </form>
 
         <div class="signup-link">
-            <p>Já tem conta?<a href="/entrar">Entrar</a></p>
+            <p>Já tem conta?<a class="link-entrar" href="/entrar">Entrar</a></p>
         </div>
     </div>
 </div>
