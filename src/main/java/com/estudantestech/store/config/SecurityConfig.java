@@ -22,6 +22,7 @@ public class SecurityConfig {
                                 "/entrar",
                                 "/css/**",
                                 "/js/**",
+                                "/criarConta",
                                 "/img/**",
                                 "/images/**",
                                 "/loja",

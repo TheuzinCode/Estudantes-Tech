@@ -14,4 +14,9 @@ public class LoginController {
     public String entrarPage() {
         return "entrar";
     }
+
+    @GetMapping("/criarConta")
+    public String criarContaPage() {
+        return "criarConta";
+    }
 }
