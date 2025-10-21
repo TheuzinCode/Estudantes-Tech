@@ -1,5 +1,6 @@
 package com.estudantestech.store.service;
 
+import com.estudantestech.store.domain.adress.Adress;
 import com.estudantestech.store.domain.client.Client;
 import com.estudantestech.store.domain.client.CreateClientDTO;
 import com.estudantestech.store.repositories.ClientRepository;
@@ -24,10 +25,10 @@ public class ClientService {
     public UUID createClient(CreateClientDTO createClientDTO) {
         String encryptedPassword = passwordEncoder.encode(createClientDTO.password());
 
-        Client entity = new Client(
+        Client client = new Client(
                 createClientDTO.name(),
-                createClientDTO.cpf(),
                 createClientDTO.email(),
+                createClientDTO.cpf(),
                 createClientDTO.birthDate(),
                 createClientDTO.gender(),
                 encryptedPassword,
@@ -35,8 +36,25 @@ public class ClientService {
                 null
         );
 
-        Client clientSaved = clientRepository.save(entity);
-        return clientSaved.getClientId();
+        boolean hasAnyAddress = (createClientDTO.cep() != null && !createClientDTO.cep().isBlank())
+                || (createClientDTO.street() != null && !createClientDTO.street().isBlank());
+
+        if (hasAnyAddress) {
+            Adress adress = new Adress(
+                    createClientDTO.cep(),
+                    createClientDTO.street(),
+                    createClientDTO.number(),
+                    createClientDTO.complement(),
+                    createClientDTO.neighborhood(),
+                    createClientDTO.city(),
+                    createClientDTO.state(),
+                    client
+            );
+            client.getAdresses().add(adress);
+        }
+
+        Client saved = clientRepository.save(client);
+        return saved.getClientId();
     }
 
     public Optional<Client> getClientById (String clientId) {

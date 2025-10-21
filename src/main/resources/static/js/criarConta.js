@@ -88,9 +88,6 @@ document.addEventListener('DOMContentLoaded', function(){
         if (neighborhoodInput) neighborhoodInput.value = data.bairro || ''
         if (cityInput) cityInput.value = data.localidade || ''
         if (stateInput) stateInput.value = data.uf || ''
-
-        if (numberInput) numberInput.value = ''
-        if (complementInput) complementInput.value = ''
     }
 
     if (cepInput) {
@@ -110,6 +107,75 @@ document.addEventListener('DOMContentLoaded', function(){
 
         cepInput.addEventListener('blur', function(){
             fetchAndFillAddress(cepInput.value)
+        })
+    }
+    
+    const form = document.getElementById('loginForm')
+    if (form) {
+        form.addEventListener('submit', async function(e){
+            e.preventDefault()
+
+            const name = (document.getElementById('nome')?.value || '').trim()
+            const email = (document.getElementById('email')?.value || '').trim()
+            const cpf = (document.getElementById('cpf')?.value || '').trim()
+            const gender = (document.getElementById('gender')?.value || '').trim()
+            const birthDate = (document.getElementById('birthDate')?.value || '').trim() // expects DD/MM/AAAA
+            const cep = (document.getElementById('cep')?.value || '').trim()
+            const street = (document.getElementById('street')?.value || '').trim()
+            const neighborhood = (document.getElementById('neighborhood')?.value || '').trim()
+            const city = (document.getElementById('city')?.value || '').trim()
+            const state = (document.getElementById('state')?.value || '').trim()
+            const number = (document.getElementById('number')?.value || '').trim()
+            const complement = (document.getElementById('complement')?.value || '').trim()
+            const password = (document.getElementById('password')?.value || '').trim()
+
+            // quick validations
+            if (!name || !email || !cpf || !birthDate || !gender || !password) {
+                alert('Preencha os campos obrigatórios: nome, email, CPF, data de nascimento, gênero e senha.')
+                return
+            }
+            if (!/.+@.+\..+/.test(email)) {
+                alert('Email inválido')
+                return
+            }
+            if (!/^\d{2}\/\d{2}\/\d{4}$/.test(birthDate)) {
+                alert('Data de nascimento no formato DD/MM/AAAA')
+                return
+            }
+
+            const payload = {
+                name,
+                cpf,
+                email,
+                birthDate, // dd/MM/yyyy - backend parses via @JsonFormat
+                gender,
+                password,
+                cep,
+                street,
+                neighborhood,
+                city,
+                state,
+                number,
+                complement
+            }
+
+            try {
+                const resp = await fetch('/api/clients', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+
+                if (resp.ok || resp.status === 201) {
+                    alert('Conta criada com sucesso!')
+                    window.location.href = '/entrar'
+                } else {
+                    const text = await resp.text()
+                    alert('Não foi possível criar a conta. Tente novamente.\n' + (text || ''))
+                }
+            } catch (err) {
+                alert('Erro ao conectar com o servidor: ' + (err?.message || err))
+            }
         })
     }
 })
