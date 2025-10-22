@@ -19,4 +19,9 @@ public class LoginController {
     public String criarContaPage() {
         return "criarConta";
     }
+
+    @GetMapping("/perfil")
+    public String perfilPage() {
+        return "perfil";
+    }
 }

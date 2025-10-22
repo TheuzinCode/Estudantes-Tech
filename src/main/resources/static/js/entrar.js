@@ -1,30 +1,42 @@
-// Simple client-side validation for /entrar while client auth is not implemented yet.
 document.addEventListener('DOMContentLoaded', function () {
-    var form = document.getElementById('loginForm');
-    if (!form) return;
+    const form = document.getElementById('loginForm')
+    if (!form) return
 
-    var emailInput = document.getElementById('email');
-    var passwordInput = document.getElementById('password');
+    const emailInput = document.getElementById('email')
+    const passwordInput = document.getElementById('password')
 
-    function isValidEmail(value) {
-        // basic email validation
-        return /.+@.+\..+/.test(value);
+    async function doLogin(email, password) {
+        const resp = await fetch('/api/clients/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, password: password })
+        })
+
+        if (!resp.ok) {
+            alert('Email e/ou Senha incorreto(s).')
+            return
+        }
+
+        const data = await resp.json()
+
+        // local storage para login de cliente
+        localStorage.setItem('clientAuth', JSON.stringify({
+            logged: true,
+            clientId: data.clientId,
+            name: data.name,
+            email: data.email
+        }))
+
+        // /loja dps de login success
+        window.location.href = '/loja'
     }
 
     form.addEventListener('submit', function (e) {
-        e.preventDefault();
+        e.preventDefault()
 
-        var email = (emailInput && emailInput.value || '').trim();
-        var password = (passwordInput && passwordInput.value || '').trim();
+        const email = (emailInput && emailInput.value || '').trim()
+        const password = (passwordInput && passwordInput.value || '').trim()
 
-        // Basic checks
-        if (!email || !password || !isValidEmail(email)) {
-            alert('credenciais erradas');
-            return;
-        }
-
-        // Since we do not have client users in the DB yet, treat any credentials as invalid for now
-        alert('credenciais erradas');
-        // Do NOT redirect; keep the user on the same page.
-    });
-});
+        doLogin(email, password)
+    })
+})

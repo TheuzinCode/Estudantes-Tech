@@ -1,18 +1,69 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const btnOpen = document.getElementById('open-cart');
-    const sidebar = document.getElementById('cart-sidebar');
-    const backdrop = document.getElementById('cart-backdrop');
-    const btnClose = document.getElementById('cart-close');
+    const btnOpen = document.getElementById('open-cart')
+    const sidebar = document.getElementById('cart-sidebar')
+    const backdrop = document.getElementById('cart-backdrop')
+    const btnClose = document.getElementById('cart-close')
 
-    if (!btnOpen || !sidebar || !backdrop || !btnClose) return;
+    const profileLink = document.getElementById('profile-link')
+    const btnLogout = document.getElementById('btn-logout')
+
+    // localStorage
+    function isClientLogged() {
+        const raw = localStorage.getItem('clientAuth')
+        if (!raw) return false
+
+        const data = JSON.parse(raw)
+
+        return data ? data.logged === true : false
+    }
+
+    function updateAuthUI() {
+        const logged = isClientLogged()
+
+        if (profileLink) {
+            profileLink.setAttribute('href', logged ? '/perfil' : '/entrar')
+        }
+
+        if (btnLogout) {
+            btnLogout.style.display = logged ? 'inline-block' : 'none'
+        }
+    }
+
+    function logoutClient() {
+        localStorage.removeItem('clientAuth')
+        updateAuthUI()
+
+        // forçar pra /loja
+        window.location.href = '/loja'
+    }
+
+    if (btnLogout) {
+        btnLogout.addEventListener('click', logoutClient)
+    }
+
+    // garantindo o estado
+    if (profileLink) {
+        profileLink.addEventListener('click', function (e) {
+            const target = isClientLogged() ? '/perfil' : '/entrar'
+
+            if (profileLink.getAttribute('href') !== target) {
+                e.preventDefault()
+                window.location.href = target
+            }
+        })
+    }
+
+    updateAuthUI()
+
+    if (!btnOpen || !sidebar || !backdrop || !btnClose) return
 
     function openCart() {
-        sidebar.classList.add('is-open');
-        backdrop.classList.add('is-open');
-        sidebar.setAttribute('aria-hidden', 'false');
-        backdrop.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('cart-open');
-        btnClose.focus({ preventScroll: true });
+        sidebar.classList.add('is-open')
+        backdrop.classList.add('is-open')
+        sidebar.setAttribute('aria-hidden', 'false')
+        backdrop.setAttribute('aria-hidden', 'false')
+        document.body.classList.add('cart-open')
+        btnClose.focus({ preventScroll: true })
     }
 
     function closeCart() {

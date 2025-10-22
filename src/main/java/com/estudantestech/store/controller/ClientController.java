@@ -2,6 +2,8 @@ package com.estudantestech.store.controller;
 
 import com.estudantestech.store.domain.client.Client;
 import com.estudantestech.store.domain.client.CreateClientDTO;
+import com.estudantestech.store.domain.client.ClientLoginRequest;
+import com.estudantestech.store.domain.client.ClientLoginResponse;
 import com.estudantestech.store.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +43,16 @@ public class ClientController {
     public ResponseEntity<java.util.List<Client>> listClients() {
         var clients = clientService.listClients();
         return ResponseEntity.ok(clients);
+    }
+
+    // login
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody ClientLoginRequest loginRequest) {
+        var clientOpt = clientService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+        if (clientOpt.isPresent()) {
+            var client = clientOpt.get();
+            return ResponseEntity.ok(new ClientLoginResponse(client.getClientId().toString(), client.getName(), client.getEmail()));
+        }
+        return ResponseEntity.status(401).body("Credenciais inválidas");
     }
 }

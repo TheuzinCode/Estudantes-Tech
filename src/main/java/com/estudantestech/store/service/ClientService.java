@@ -64,4 +64,13 @@ public class ClientService {
     public List<Client> listClients() {
         return clientRepository.findAll();
     }
+
+    // autenticacao client email + password
+    public Optional<Client> authenticate(String email, String rawPassword) {
+        if (email == null || email.isBlank() || rawPassword == null || rawPassword.isBlank()) {
+            return Optional.empty();
+        }
+        return clientRepository.findByEmail(email)
+                .filter(c -> passwordEncoder.matches(rawPassword, c.getPassword()));
+    }
 }

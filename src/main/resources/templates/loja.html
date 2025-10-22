@@ -11,10 +11,11 @@
         <img th:src="@{/img/logo.png}" width="45" height="45" alt="logo">
         <div>PETSHOP</div>
         <div class="right-icons">
-            <a href="/entrar">
+            <a id="profile-link" href="/entrar" aria-label="Perfil ou Entrar">
                 <img th:src="@{/img/perfil.png}" width="30" height="30" alt="perfil">
             </a>
             <img th:src="@{/img/carrinho.png}" width="30" height="30" alt="carrinho" id="open-cart">
+            <button id="btn-logout" type="button" style="margin-left:8px; display:none;">Sair</button>
         </div>
     </header>
 

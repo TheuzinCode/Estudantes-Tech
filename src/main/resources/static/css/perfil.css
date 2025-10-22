@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.cabecalho {
+    display: flex;
+    gap: 500px;
+    justify-content: center;
+    align-items: center;
+    background: #28a79b;
+    color: #fff;
+    font-weight: 700;
+    height: 50px;
+}
+
+.right-icons {
+    display: flex;
+    gap: 20px;
+}
+
+.temp {
+    padding:16px;
+}

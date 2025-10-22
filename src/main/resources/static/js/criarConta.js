@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function(){
             fetchAndFillAddress(cepInput.value)
         })
     }
-    
+
     const form = document.getElementById('loginForm')
     if (form) {
         form.addEventListener('submit', async function(e){

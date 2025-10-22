@@ -21,6 +21,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/login",
                                 "/entrar",
+                                "/perfil",
                                 "/css/**",
                                 "/js/**",
                                 "/criarConta",
@@ -30,6 +31,7 @@ public class SecurityConfig {
                                 "/loja/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/clients").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/clients/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
