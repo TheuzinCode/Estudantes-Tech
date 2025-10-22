@@ -38,7 +38,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (btnLogout) {
-        btnLogout.addEventListener('click', logoutClient)
+        btnLogout.addEventListener('click', function (e) {
+            e.preventDefault()
+            const confirmar = window.confirm('Tem certeza que deseja sair?')
+            if (confirmar) {
+                logoutClient()
+            }
+        })
     }
 
     // garantindo o estado
