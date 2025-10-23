@@ -4,6 +4,7 @@ import com.estudantestech.store.domain.client.Client;
 import com.estudantestech.store.domain.client.CreateClientDTO;
 import com.estudantestech.store.domain.client.ClientLoginRequest;
 import com.estudantestech.store.domain.client.ClientLoginResponse;
+import com.estudantestech.store.domain.client.UpdateClientDTO;
 import com.estudantestech.store.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,5 +55,15 @@ public class ClientController {
             return ResponseEntity.ok(new ClientLoginResponse(client.getClientId().toString(), client.getName(), client.getEmail()));
         }
         return ResponseEntity.status(401).body("Credenciais inválidas");
+    }
+
+    // atualiza os campos editaveis
+    @PutMapping("/{clientId}")
+    public ResponseEntity<?> updateClient(@PathVariable("clientId") String clientId, @RequestBody UpdateClientDTO update) {
+        var updated = clientService.updateClient(clientId, update);
+        if (updated.isPresent()) {
+            return ResponseEntity.ok(updated.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 }

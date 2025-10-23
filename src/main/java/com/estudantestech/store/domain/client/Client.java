@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class Client {
     private String cpf;
     private Date birthDate;
     private String gender;
+    @JsonIgnore
     private String password;
 
     @CreationTimestamp
@@ -49,5 +51,6 @@ public class Client {
     }
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Adress> adresses = new ArrayList<>();
 }
