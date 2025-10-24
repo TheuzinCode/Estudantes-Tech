@@ -135,6 +135,32 @@ body {
     background: #fafafa;
     border-radius: 10px;
     padding: 12px 14px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.address-item.default {
+    border-color: #28a79b;
+    box-shadow: 0 4px 12px rgba(40,167,155,0.06);
+    background: #fff;
+}
+
+.address-radio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 80px;
+}
+
+.address-radio input[type="radio"] {
+    width: 18px;
+    height: 18px;
+}
+
+.address-content {
+    flex: 1;
 }
 
 #addressForm {

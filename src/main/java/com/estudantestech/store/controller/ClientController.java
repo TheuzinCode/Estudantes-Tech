@@ -97,4 +97,14 @@ public class ClientController {
         }
         return ResponseEntity.badRequest().body("Não foi possível adicionar o endereço.");
     }
+
+    // marca um endereço como padrão
+    @PutMapping("/{clientId}/addresses/{adressId}/default")
+    public ResponseEntity<?> setDefaultAddress(@PathVariable("clientId") String clientId, @PathVariable("adressId") Long adressId) {
+        var updated = clientService.setDefaultAddress(clientId, adressId);
+        if (updated.isPresent()) {
+            return ResponseEntity.ok(updated.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

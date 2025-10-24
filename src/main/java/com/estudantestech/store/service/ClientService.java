@@ -147,7 +147,40 @@ public class ClientService {
                 client
         );
 
+        // se não houver endereço padrão para esse cliente, torne este o padrão
+        var clientUuid = client.getClientId();
+        var existingDefault = adressRepository.findByClient_ClientIdAndIsDefaultTrue(clientUuid);
+        if (existingDefault.isEmpty()) {
+            adress.setDefault(true);
+        }
+
         var saved = adressRepository.save(adress);
         return Optional.of(saved);
+    }
+
+    public Optional<Adress> setDefaultAddress(String clientId, Long adressId) {
+        if (clientId == null || clientId.isBlank() || adressId == null) return Optional.empty();
+        UUID clientUuid = UUID.fromString(clientId);
+
+        var targetOpt = adressRepository.findByAdressIdAndClient_ClientId(adressId, clientUuid);
+        if (targetOpt.isEmpty()) return Optional.empty();
+
+        var target = targetOpt.get();
+
+        // desmarca o atual padrao se existir
+        var currentDefaultOpt = adressRepository.findByClient_ClientIdAndIsDefaultTrue(clientUuid);
+        if (currentDefaultOpt.isPresent()) {
+            var current = currentDefaultOpt.get();
+            if (!current.getAdressId().equals(target.getAdressId())) {
+                current.setDefault(false);
+                adressRepository.save(current);
+            }
+        }
+
+        // marca o target como default (se ja estiver true nao faz mal)
+        target.setDefault(true);
+        adressRepository.save(target);
+
+        return Optional.of(target);
     }
 }

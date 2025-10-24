@@ -2,6 +2,7 @@ package com.estudantestech.store.domain.adress;
 
 import com.estudantestech.store.domain.client.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,10 @@ public class Adress {
     private String neighborhood;
     private String city;
     private String state;
+
+    @Column(name = "is_default")
+    @JsonProperty("isDefault")
+    private boolean isDefault = false;
 
     @ManyToOne
     @JoinColumn(name = "idClient")
