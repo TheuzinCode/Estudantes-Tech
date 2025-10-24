@@ -5,12 +5,15 @@ import com.estudantestech.store.domain.client.Client;
 import com.estudantestech.store.domain.client.CreateClientDTO;
 import com.estudantestech.store.domain.client.UpdateClientDTO;
 import com.estudantestech.store.repositories.ClientRepository;
+import org.hibernate.NonUniqueResultException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,11 +27,20 @@ public class ClientService {
     private PasswordEncoder passwordEncoder;
 
     public UUID createClient(CreateClientDTO createClientDTO) {
+        // impede e-mails duplicados
+        if (createClientDTO.email() == null || createClientDTO.email().isBlank()) {
+            throw new IllegalArgumentException("Email é obrigatório");
+        }
+        final String emailNorm = createClientDTO.email().trim().toLowerCase(Locale.ROOT);
+        if (clientRepository.existsByEmail(emailNorm)) {
+            throw new IllegalArgumentException("Email já cadastrado");
+        }
+
         String encryptedPassword = passwordEncoder.encode(createClientDTO.password());
 
         Client client = new Client(
                 createClientDTO.name(),
-                createClientDTO.email(),
+                emailNorm,
                 createClientDTO.cpf(),
                 createClientDTO.birthDate(),
                 createClientDTO.gender(),
@@ -71,8 +83,14 @@ public class ClientService {
         if (email == null || email.isBlank() || rawPassword == null || rawPassword.isBlank()) {
             return Optional.empty();
         }
-        return clientRepository.findByEmail(email)
-                .filter(c -> passwordEncoder.matches(rawPassword, c.getPassword()));
+        final String emailNorm = email.trim().toLowerCase(Locale.ROOT);
+        try {
+            return clientRepository.findByEmail(emailNorm)
+                    .filter(c -> passwordEncoder.matches(rawPassword, c.getPassword()));
+        } catch (IncorrectResultSizeDataAccessException | NonUniqueResultException e) {
+            // Há duplicatas no banco: trate como credenciais inválidas até saneamento dos dados
+            return Optional.empty();
+        }
     }
 
     // atualiza só alguns campos do client

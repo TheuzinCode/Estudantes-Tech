@@ -7,6 +7,7 @@ import com.estudantestech.store.domain.client.ClientLoginResponse;
 import com.estudantestech.store.domain.client.UpdateClientDTO;
 import com.estudantestech.store.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +23,20 @@ public class ClientController {
     // create
     @PostMapping
     public ResponseEntity<Client> createClient(@RequestBody CreateClientDTO createClientDTO) {
-        var clientId = clientService.createClient(createClientDTO);
-
-        return ResponseEntity.created(URI.create("/api/clients" + clientId.toString())).build();
+        try {
+            var clientId = clientService.createClient(createClientDTO);
+            return ResponseEntity.created(URI.create("/api/clients" + clientId.toString())).build();
+        } catch (IllegalArgumentException ex) {
+            // email duplicado ou inválido
+            String msg = ex.getMessage() != null ? ex.getMessage() : "Dados inválidos";
+            if (msg.toLowerCase().contains("email")) {
+                return ResponseEntity.status(409).build();
+            }
+            return ResponseEntity.badRequest().build();
+        } catch (DataIntegrityViolationException ex) {
+            // pega violacao do unique constraint no banco
+            return ResponseEntity.status(409).build();
+        }
     }
 
     // get by id

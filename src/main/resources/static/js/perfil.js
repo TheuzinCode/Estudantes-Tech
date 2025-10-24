@@ -6,6 +6,16 @@ document.addEventListener('DOMContentLoaded', function () {
         return
     }
 
+    // Helper: valida nome com 2 palavras e >= 3 letras em cada
+    function isValidClientName(name){
+        const clean = (name || '').trim().replace(/\s+/g, ' ')
+        if (!clean) return false
+        const words = clean.split(' ')
+        if (words.length < 2) return false
+        const letterRegex = /[A-Za-zÀ-ÖØ-öø-ÿ]/g
+        return words.every(w => ((w.match(letterRegex) || []).length) >= 3)
+    }
+
     const form = document.getElementById('perfilForm')
     const inputId = document.getElementById('clientId')
     const inputName = document.getElementById('name')
@@ -71,7 +81,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const gender = (selectGender.value || '').trim()
         const password = (inputPassword.value || '').trim()
 
-        if (name) payload.name = name
+        if (name) {
+            if (!isValidClientName(name)) {
+                alert('O nome deve ter pelo menos duas palavras, com no mínimo 3 letras em cada uma.')
+                return
+            }
+            payload.name = name
+        }
+
         if (birthDate) payload.birthDate = birthDate
         if (gender) payload.gender = gender
         if (password) payload.password = password

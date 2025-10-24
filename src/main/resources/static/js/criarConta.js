@@ -39,6 +39,20 @@ document.addEventListener('DOMContentLoaded', function(){
         })
     }
 
+    // valida nome com 2 palavras e >= 3 letras em cada
+    function isValidClientName(name){
+        const clean = (name || '').trim().replace(/\s+/g, ' ')
+        if (!clean) return false
+        const words = clean.split(' ')
+        if (words.length < 2) return false
+        // conta somente letras (inclui acentuadas)
+        const letterRegex = /[A-Za-zÀ-ÖØ-öø-ÿ]/g
+        return words.every(w => {
+            const letters = (w.match(letterRegex) || []).length
+            return letters >= 3
+        })
+    }
+
     // viaCEP
     const cepInput = document.getElementById('cep')
     const streetInput = document.getElementById('street')
@@ -134,6 +148,10 @@ document.addEventListener('DOMContentLoaded', function(){
                 alert('Preencha os campos obrigatórios: nome, email, CPF, data de nascimento, gênero e senha.')
                 return
             }
+            if (!isValidClientName(name)) {
+                alert('O nome deve ter pelo menos duas palavras, com no mínimo 3 letras em cada uma.')
+                return
+            }
             if (!/.+@.+\..+/.test(email)) {
                 alert('Email inválido')
                 return
@@ -169,6 +187,8 @@ document.addEventListener('DOMContentLoaded', function(){
                 if (resp.ok || resp.status === 201) {
                     alert('Conta criada com sucesso!')
                     window.location.href = '/entrar'
+                } else if (resp.status === 409) {
+                    alert('Esse e-mail já está cadastrado. Faça login ou use outro e-mail.')
                 } else {
                     const text = await resp.text()
                     alert('Não foi possível criar a conta. Tente novamente.\n' + (text || ''))

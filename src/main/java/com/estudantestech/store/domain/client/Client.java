@@ -25,6 +25,8 @@ public class Client {
     private UUID clientId;
 
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
     private String cpf;
     private Date birthDate;
