@@ -14,11 +14,8 @@ body {
     height: 50px;
 }
 
-.right-icons {
-    display: flex;
-    gap: 20px;
+.right-icons a {
     color: #191414;
-    background-color: #cc3333;
     text-decoration: none;
 }
 
@@ -108,4 +105,46 @@ body {
 .actions #btn-save:active,
 .actions button[type="submit"]:active {
     transform: translateY(1px);
+}
+
+/* ===== Endereços ===== */
+.enderecos {
+    max-width: 720px;
+    margin: 24px auto 48px auto;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.enderecos h2 {
+    margin: 0 0 16px 0;
+    font-size: 22px;
+    color: #222;
+}
+
+#address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 12px 0 16px 0;
+}
+
+.address-item {
+    border: 1px solid #e8e8e8;
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+#addressForm {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    align-items: end;
+}
+
+.enderecos .form-row input[readonly] {
+    background: #f4f4f4;
+    color: #777;
 }

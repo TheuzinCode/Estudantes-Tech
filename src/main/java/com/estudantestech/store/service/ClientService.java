@@ -1,9 +1,11 @@
 package com.estudantestech.store.service;
 
 import com.estudantestech.store.domain.adress.Adress;
+import com.estudantestech.store.domain.adress.CreateAdressDTO;
 import com.estudantestech.store.domain.client.Client;
 import com.estudantestech.store.domain.client.CreateClientDTO;
 import com.estudantestech.store.domain.client.UpdateClientDTO;
+import com.estudantestech.store.repositories.AdressRepository;
 import com.estudantestech.store.repositories.ClientRepository;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -22,6 +23,9 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private AdressRepository adressRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -44,9 +48,7 @@ public class ClientService {
                 createClientDTO.cpf(),
                 createClientDTO.birthDate(),
                 createClientDTO.gender(),
-                encryptedPassword,
-                Instant.now(),
-                null
+                encryptedPassword
         );
 
         boolean hasAnyAddress = (createClientDTO.cep() != null && !createClientDTO.cep().isBlank())
@@ -83,7 +85,7 @@ public class ClientService {
         if (email == null || email.isBlank() || rawPassword == null || rawPassword.isBlank()) {
             return Optional.empty();
         }
-        final String emailNorm = email.trim().toLowerCase(Locale.ROOT);
+        final String emailNorm = email.trim().toLowerCase(java.util.Locale.ROOT);
         try {
             return clientRepository.findByEmail(emailNorm)
                     .filter(c -> passwordEncoder.matches(rawPassword, c.getPassword()));
@@ -98,10 +100,12 @@ public class ClientService {
         if (clientId == null || clientId.isBlank()) {
             return Optional.empty();
         }
+
         var opt = clientRepository.findById(UUID.fromString(clientId));
         if (opt.isEmpty()) return Optional.empty();
 
         var client = opt.get();
+
         if (update != null) {
             if (update.name() != null && !update.name().isBlank()) {
                 client.setName(update.name());
@@ -116,7 +120,34 @@ public class ClientService {
                 client.setPassword(passwordEncoder.encode(update.password()));
             }
         }
+
         var saved = clientRepository.save(client);
+        return Optional.of(saved);
+    }
+
+    public List<Adress> listAddresses(String clientId) {
+        UUID id = UUID.fromString(clientId);
+        return adressRepository.findByClient_ClientId(id);
+    }
+
+    public Optional<Adress> addAddress(String clientId, CreateAdressDTO dto) {
+        if (clientId == null || clientId.isBlank() || dto == null) return Optional.empty();
+        var clientOpt = clientRepository.findById(UUID.fromString(clientId));
+        if (clientOpt.isEmpty()) return Optional.empty();
+
+        var client = clientOpt.get();
+        var adress = new Adress(
+                dto.cep(),
+                dto.street(),
+                dto.number(),
+                dto.complement(),
+                dto.neighborhood(),
+                dto.city(),
+                dto.state(),
+                client
+        );
+
+        var saved = adressRepository.save(adress);
         return Optional.of(saved);
     }
 }

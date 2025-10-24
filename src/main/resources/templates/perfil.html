@@ -59,6 +59,45 @@
             </div>
         </form>
     </section>
+
+    <section class="enderecos" style="margin-top: 24px;">
+        <h2>Endereços</h2>
+        <div id="address-list" style="display:flex; flex-direction:column; gap:12px; margin:12px 0;"></div>
+
+        <form id="addressForm" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; align-items:end;">
+            <div class="form-row">
+                <label for="addr-cep">CEP</label>
+                <input type="text" id="addr-cep" name="cep" placeholder="00000-000">
+            </div>
+            <div class="form-row">
+                <label for="addr-street">Logradouro</label>
+                <input type="text" id="addr-street" name="street" readonly>
+            </div>
+            <div class="form-row">
+                <label for="addr-neighborhood">Bairro</label>
+                <input type="text" id="addr-neighborhood" name="neighborhood" readonly>
+            </div>
+            <div class="form-row">
+                <label for="addr-city">Cidade</label>
+                <input type="text" id="addr-city" name="city" readonly>
+            </div>
+            <div class="form-row">
+                <label for="addr-state">Estado</label>
+                <input type="text" id="addr-state" name="state" readonly>
+            </div>
+            <div class="form-row">
+                <label for="addr-number">Número</label>
+                <input type="text" id="addr-number" name="number" placeholder="Número">
+            </div>
+            <div class="form-row">
+                <label for="addr-complement">Complemento</label>
+                <input type="text" id="addr-complement" name="complement" placeholder="Apto, bloco, etc.">
+            </div>
+            <div class="actions" style="grid-column: 1 / -1;">
+                <button type="submit">Adicionar endereço</button>
+            </div>
+        </form>
+    </section>
 </main>
 
 <script th:src="@{/js/perfil.js}"></script>

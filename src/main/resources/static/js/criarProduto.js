@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const regexAvaliacao = /^(?:[0-4](?:\.5)?|5)$/
 
             if (nome.length > 200) {
-                alert('O nome do produto não pode ter mais de 5 caracteres.')
+                alert('O nome do produto não pode ter mais de 200 caracteres.')
                 e.preventDefault()
             }
 
             if (descricao.length > 2000) {
-                alert('A descrição do produto não pode ter mais de 5 caracteres.')
+                alert('A descrição do produto não pode ter mais de 2000 caracteres.')
                 e.preventDefault()
             }
 
@@ -30,5 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
 document.querySelector('.btn-cancel').addEventListener('click', function() {
     window.location.href = '/products'
 })
+
 
 

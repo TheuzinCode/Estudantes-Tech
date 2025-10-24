@@ -40,7 +40,7 @@ public class Client {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    public Client (String name, String email, String cpf, Date birthDate, String gender, String password, Instant creationTimestamp, Instant updateTimestamp) {
+    public Client (String name, String email, String cpf, Date birthDate, String gender, String password) {
         this.name = name;
         this.email = email;
         this.cpf = cpf;

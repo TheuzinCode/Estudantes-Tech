@@ -1,23 +1,5 @@
-function openVisualizarModal(produto) {
-    document.getElementById('modal-produto-nome').textContent = produto.name
-    document.getElementById('modal-produto-desc').textContent = produto.description
-    document.getElementById('modal-produto-preco').textContent = produto.price
-    document.getElementById('modal-produto-quantidade').textContent = produto.quantity
-    document.getElementById('modal-produto-status').textContent = produto.active ? 'Ativo' : 'Inativo'
-
-    setCarouselImages(produto.imageIds)
-
-    document.getElementById('modal-visualizar').style.display = 'flex'
-}
-
-function closeVisualizarModal() {
-    document.getElementById('modal-visualizar').style.display = 'none';
-}
-
-document.getElementById('close-modal-visualizar').onclick = closeVisualizarModal
-document.getElementById('btn-fechar-modal').onclick = closeVisualizarModal
-
 window.addEventListener('DOMContentLoaded', function() {
+    // Wire visualizar buttons to open the modal
     document.querySelectorAll('.btn-visualizar').forEach(function(btn) {
         btn.onclick = async function() {
             const tr = btn.closest('tr')
@@ -50,7 +32,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 imageIds: imageIds
             }
 
-            openVisualizarModal(produto)
+            window.openVisualizarModal(produto)
         }
     })
 
@@ -67,23 +49,27 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     function currentImageUrl() {
-        if (carouselImageIds.length === 0) return '';
-        const id = encodeURIComponent(String(carouselImageIds[carouselIndex]).trim());
-        return '/images/' + id;
+        if (carouselImageIds.length === 0) return ''
+        const id = encodeURIComponent(String(carouselImageIds[carouselIndex]).trim())
+        return '/images/' + id
     }
 
     function updateCarouselImage() {
         if (carouselImageIds.length > 0) {
             const url = currentImageUrl()
-            modalImg.src = url
-            modalImg.style.display = 'block'
+            if (modalImg) {
+                modalImg.src = url
+                modalImg.style.display = 'block'
+            }
 
             if (btnPrev) btnPrev.style.visibility = carouselImageIds.length > 1 ? 'visible' : 'hidden'
             if (btnNext) btnNext.style.visibility = carouselImageIds.length > 1 ? 'visible' : 'hidden'
 
         } else {
-            modalImg.removeAttribute('src')
-            modalImg.style.display = 'none'
+            if (modalImg) {
+                modalImg.removeAttribute('src')
+                modalImg.style.display = 'none'
+            }
 
             if (btnPrev) btnPrev.style.visibility = 'hidden'
             if (btnNext) btnNext.style.visibility = 'hidden'
@@ -108,12 +94,20 @@ window.addEventListener('DOMContentLoaded', function() {
 
     // Exponha para o modal
     window.openVisualizarModal = function(produto) {
+        const modal = document.getElementById('modal-visualizar')
+        const closeX = document.getElementById('close-modal-visualizar')
+        const closeBtn = document.getElementById('btn-fechar-modal')
+
         document.getElementById('modal-produto-nome').textContent = produto.name
         document.getElementById('modal-produto-desc').textContent = produto.description
         document.getElementById('modal-produto-preco').textContent = produto.price
         document.getElementById('modal-produto-quantidade').textContent = produto.quantity
         document.getElementById('modal-produto-status').textContent = produto.active ? 'Ativo' : 'Inativo'
-        setCarouselImages(produto.imageIds)
-        document.getElementById('modal-visualizar').style.display = 'flex'
+        window.setCarouselImages(produto.imageIds)
+        if (modal) modal.style.display = 'flex'
+
+        function closeModal(){ if (modal) modal.style.display = 'none' }
+        if (closeX) closeX.onclick = closeModal
+        if (closeBtn) closeBtn.onclick = closeModal
     }
 })

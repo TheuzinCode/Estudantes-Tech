@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/clients/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/clients/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/clients/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/clients/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

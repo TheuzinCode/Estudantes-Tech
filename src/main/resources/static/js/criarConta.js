@@ -86,16 +86,11 @@ document.addEventListener('DOMContentLoaded', function(){
         if (complementInput) complementInput.value = ''
     }
 
-    let lastCepQueried = ''
-    let pendingController = null
-
     async function fetchAndFillAddress(rawCep){
         const cepDigits = digitsOnly(rawCep)
+        if (cepDigits.length !== 8) return
 
-        lastCepQueried = cepDigits
-
-        pendingController = new AbortController()
-        const resp = await fetch(`https://viacep.com.br/ws/${cepDigits}/json/`, { signal: pendingController.signal })
+        const resp = await fetch(`https://viacep.com.br/ws/${cepDigits}/json/`)
         const data = await resp.json()
 
         if (streetInput) streetInput.value = data.logradouro || ''
@@ -112,10 +107,8 @@ document.addEventListener('DOMContentLoaded', function(){
             // consulta quando completar 8 dígitos
             if (digitsOnly(masked).length === 8) {
                 fetchAndFillAddress(masked)
-
             } else {
                 clearAddressFields()
-                lastCepQueried = ''
             }
         })
 

@@ -1,7 +1,7 @@
 package com.estudantestech.store.domain.adress;
 
 import com.estudantestech.store.domain.client.Client;
-import com.estudantestech.store.domain.product.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +26,7 @@ public class Adress {
 
     @ManyToOne
     @JoinColumn(name = "idClient")
+    @JsonIgnore
     private Client client;
 
     public Adress() {

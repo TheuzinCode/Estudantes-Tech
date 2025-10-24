@@ -5,6 +5,8 @@ import com.estudantestech.store.domain.client.CreateClientDTO;
 import com.estudantestech.store.domain.client.ClientLoginRequest;
 import com.estudantestech.store.domain.client.ClientLoginResponse;
 import com.estudantestech.store.domain.client.UpdateClientDTO;
+import com.estudantestech.store.domain.adress.Adress;
+import com.estudantestech.store.domain.adress.CreateAdressDTO;
 import com.estudantestech.store.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -77,5 +80,21 @@ public class ClientController {
             return ResponseEntity.ok(updated.get());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    // mostra os endereços do client
+    @GetMapping("/{clientId}/addresses")
+    public ResponseEntity<List<Adress>> listAddresses(@PathVariable("clientId") String clientId) {
+        return ResponseEntity.ok(clientService.listAddresses(clientId));
+    }
+
+    // cria um novo endereço para o client
+    @PostMapping("/{clientId}/addresses")
+    public ResponseEntity<?> addAddress(@PathVariable("clientId") String clientId, @RequestBody CreateAdressDTO dto) {
+        var saved = clientService.addAddress(clientId, dto);
+        if (saved.isPresent()) {
+            return ResponseEntity.ok(saved.get());
+        }
+        return ResponseEntity.badRequest().body("Não foi possível adicionar o endereço.");
     }
 }
