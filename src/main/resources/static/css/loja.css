@@ -72,18 +72,35 @@ body {
     color: #28a79b;
 }
 
-.btn-details {
-    margin-top: 6px;
-    background: #28a79b;
-    color: #fff;
+.btn-details,
+.btn-buy {
+    display: inline-block;
+    text-decoration: none;
     border: none;
     border-radius: 8px;
     padding: 10px 12px;
     cursor: pointer;
     font-weight: 600;
+    font-size: 14px;
 }
+
+.btn-details {
+    margin-top: 6px;
+    background: #28a79b;
+    color: #fff;
+}
+
+.btn-buy {
+    background: #e0e0e0;
+    color: #333;
+}
+
 .btn-details:hover {
     background: #1f8e84;
+}
+
+.btn-buy:hover {
+    background: #cfcfcf;
 }
 
 /* modal do carrinho */
