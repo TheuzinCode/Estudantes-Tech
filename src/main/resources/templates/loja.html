@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,13 +69,17 @@
                     <option value="premium">Frete Premium - $15</option>
                 </select>
             </div>
-            <div class="subtotal">Subtotal: R$ <span id="cart-subtotal">0,00</span></div>
+            <div class="subtotal">Subtotal: b R$ <span id="cart-subtotal">0,00</span></div>
+            <div>
+               <a href="/checkout" id="botaoFinalizarCompra">Finalizar Compra</a>
+            </div>
         </footer>
     </aside>
 
     <footer></footer>
 
     <script th:src="@{/js/carrinho.js}"></script>
+    <script th:src="@{/js/checkout.js}"></script>
     <script th:src="@{/js/loja.js}"></script>
 </body>
 </html>

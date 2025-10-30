@@ -24,4 +24,7 @@ public class LoginController {
     public String perfilPage() {
         return "perfil";
     }
+
+    @GetMapping("/checkout")
+    public String checkoutPage() {return "checkout";}
 }
