@@ -20,6 +20,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/login",
+                                "/orders",
+                                "/api/orders",
                                 "/checkout",
                                 "/checkout/**",
                                 "/entrar",
@@ -32,6 +34,8 @@ public class SecurityConfig {
                                 "/loja",
                                 "/loja/**"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/clients").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/clients/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/clients/**").permitAll()

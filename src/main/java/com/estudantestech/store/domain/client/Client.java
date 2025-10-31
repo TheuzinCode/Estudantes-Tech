@@ -1,6 +1,7 @@
 package com.estudantestech.store.domain.client;
 
 import com.estudantestech.store.domain.adress.Adress;
+import com.estudantestech.store.domain.order.Order;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,4 +56,7 @@ public class Client {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Adress> adresses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<Order> pedidos = new ArrayList<>();
 }
