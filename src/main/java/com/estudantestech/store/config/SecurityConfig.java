@@ -34,6 +34,10 @@ public class SecurityConfig {
                                 "/loja",
                                 "/loja/**"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.POST, " /swagger-ui/index.html").permitAll()
+                        .requestMatchers(HttpMethod.POST, " /swagger-ui").permitAll()
+                        .requestMatchers(HttpMethod.POST, " /swagger-ui.html").permitAll()
+                        .requestMatchers(HttpMethod.POST, " /swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/clients").permitAll()

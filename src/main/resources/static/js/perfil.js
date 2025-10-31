@@ -145,6 +145,8 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>`
     }
 
+
+    // <!-- DIV PARA ADICIONAR ENDERECO -->
     async function loadAddresses(){
         if (!addressList) return
 

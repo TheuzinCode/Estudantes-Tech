@@ -1,6 +1,8 @@
 <!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
 <html lang="pt-br">
 <head>
+
     <meta charset="UTF-8">
     <title>Meu perfil</title>
     <link rel="stylesheet" th:href="@{/css/perfil.css}">
@@ -62,7 +64,8 @@
 
     <section class="enderecos" style="margin-top: 24px;">
         <h2>Endereços</h2>
-        <div id="address-list" style="display:flex; flex-direction:column; gap:12px; margin:12px 0;"></div>
+        <div id="address-list" style="display:flex; flex-direction:column; gap:12px; margin:12px 0;"></div>  <!-- DIV PARA ADICIONAR ENDERECO -->
+
 
         <form id="addressForm" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; align-items:end;">
             <div class="form-row">
