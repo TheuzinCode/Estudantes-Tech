@@ -1,17 +1,17 @@
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
     loadAddresses()
-    //renderizarEnderecos();
-    //renderizarResumo();
+    renderizarResumo();
     //configurarEventos();
     //calcularTotais();
 });
 
 
+
 const botaoFinalizar = document.getElementById('botaoFinalizarCompra')
 
 const auth = JSON.parse(localStorage.getItem('clientAuth'))
-const product = JSON.parse(localStorage.getItem(''))
+const product = JSON.parse(localStorage.getItem('cart_v1'))
 
 function verificarLogado(botaoFinalizar) {
     if (!auth || auth.logged !== true || !auth.clientId) {
@@ -42,4 +42,24 @@ if (botaoFinalizar) {
                         </div>
                    </label>
             `).join('');
+            console.log(list)
  }
+
+
+let enderecoSelecionado = null;
+let formaPagamento = "cartao";
+
+
+
+//Renderizar resumo lateral
+function renderizarResumo() {
+    const summaryItems = document.getElementById('summaryItems');
+
+    summaryItems.innerHTML = product.items.map((produto) => `
+        <div class="summary-item">
+            <span class="summary-item-name">${produto.qty}x ${produto.name}</span>
+            <span>R$ ${(produto.price * produto.qty).toFixed(2).replace('.', ',')}</span>
+        </div>
+    `).join('');
+}
+
