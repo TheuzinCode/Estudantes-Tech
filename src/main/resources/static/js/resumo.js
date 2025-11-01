@@ -14,7 +14,7 @@ console.log(pedido)
 function carregarDados() {
     if (!pedido) {
         alert('Nenhum pedido encontrado. Redirecionando para o checkout...');
-        window.location.href = 'checkout.html';
+        window.location.href = '/loja';
         return;
     }
 }
@@ -83,6 +83,7 @@ function configurarEventos() {
     // Botão confirmar
     document.getElementById('btnConfirmar').addEventListener('click', function() {
         confirmarPedido();
+        window.location.href = '/loja';
     });
 }
 
@@ -96,4 +97,5 @@ function confirmarPedido() {
 
     // Limpar dados do localStorage
     localStorage.removeItem('pedido');
+    localStorage.removeItem('cart_v1');
 }
