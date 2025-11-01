@@ -87,15 +87,42 @@ function configurarEventos() {
     });
 }
 
-function confirmarPedido() {
-    // Gerar número do pedido
-    const numeroPedido = 'PED' + Date.now().toString().slice(-8);
 
-    // Mostrar modal de confirmação
-    document.getElementById('numeroPedido').textContent = numeroPedido;
-    document.getElementById('modalConfirmacao').style.display = 'flex';
 
-    // Limpar dados do localStorage
-    localStorage.removeItem('pedido');
-    localStorage.removeItem('cart_v1');
+
+
+ async function confirmarPedido() {
+        const order = {
+          clientId: pedido.clientId,
+          totalValue: pedido.total,
+          itens: pedido.produtos.map(p => ({
+                             productId: p.id,
+                             quantity: p.qty,
+                             price: p.price
+                         })),
+          parcelas: pedido.cartao ? pedido.cartao.parcelas : 1,
+          paymentMethod: pedido.formaPagamento
+        }
+
+    try{
+        const resp = await fetch('/api/orders', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(order)
+
+        })
+
+        if (!resp.ok) {
+            const errorText = await resp.text();
+            throw new Error(`Erro ao confirmar pedido: ${errorText}`);
+        }
+
+        alert('Pedido confirmado com sucesso!');
+                localStorage.removeItem('pedido');
+                localStorage.removeItem('cart_v1');
+
+
+    }catch (err) {
+         alert('Erro ao conectar com o servidor: ' + (err?.message || err))
+    }
 }
