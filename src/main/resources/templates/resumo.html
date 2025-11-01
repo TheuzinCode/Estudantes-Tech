@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo da Compra</title>
+    <link rel="stylesheet" th:href="@{/css/checkout.css}">
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <h1>Resumo da Compra</h1>
+        <p class="subtitle">Confira os dados do seu pedido antes de finalizar</p>
+    </header>
+
+    <div class="resumo-container">
+        <div class="main-content">
+            <!-- Endereço de Entrega -->
+            <section class="card">
+                <h2 class="section-title">Endereço de Entrega</h2>
+                <div class="info-display" id="enderecoResumo">
+                    <!-- Será preenchido via JavaScript -->
+                </div>
+            </section>
+
+            <!-- Forma de Pagamento -->
+            <section class="card">
+                <h2 class="section-title">Forma de Pagamento</h2>
+                <div class="info-display" id="pagamentoResumo">
+                    <!-- Será preenchido via JavaScript -->
+                </div>
+            </section>
+
+            <!-- Produtos -->
+            <section class="card">
+                <h2 class="section-title">Produtos</h2>
+                <div class="produtos-resumo" id="produtosResumo">
+                    <!-- Será preenchido via JavaScript -->
+                </div>
+            </section>
+        </div>
+
+        <aside class="sidebar">
+            <div class="card summary-card">
+                <h3>Total do Pedido</h3>
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotalResumo">R$ 0,00</span>
+                    </div>
+                    <div class="summary-row" id="discountRowResumo" style="display: none;">
+                        <span class="discount">Desconto (5%)</span>
+                        <span class="discount" id="discountResumo">- R$ 0,00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="totalResumo">R$ 0,00</span>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-secondary" id="btnVoltar">Voltar ao Checkout</button>
+                    <button class="btn-primary" id="btnConfirmar">Confirmar Compra</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="modalConfirmacao" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="success-icon">✓</div>
+            <h2>Pedido Confirmado!</h2>
+            <p>Seu pedido foi realizado com sucesso.</p>
+            <p class="order-number">Número do pedido: <strong id="numeroPedido"></strong></p>
+            <button class="btn-primary" onclick="window.location.href='checkout.html'">Fazer Novo Pedido</button>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/resumo.js}"></script>
+</body>
+</html>

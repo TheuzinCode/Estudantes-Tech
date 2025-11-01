@@ -27,4 +27,7 @@ public class LoginController {
 
     @GetMapping("/checkout")
     public String checkoutPage() {return "checkout";}
+
+    @GetMapping("/resumo")
+    public String resumoPage() {return "resumo";}
 }

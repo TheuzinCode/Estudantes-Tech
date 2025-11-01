@@ -115,6 +115,9 @@ function renderizarFrete(){
 
 
     // Calcular totais
+    let total = 0;
+    let subtotal = 0;
+
 function calcularTotais() {
     let valueFrete = 0;
      if(frete === "premium"){
@@ -126,9 +129,9 @@ function calcularTotais() {
      if(frete === "economico"){
          valueFrete = 5
      }
-    const subtotal = valueFrete + (product.items.reduce((acc, p) => acc + (p.price * p.qty), 0));
+    subtotal = valueFrete + (product.items.reduce((acc, p) => acc + (p.price * p.qty), 0));
     const desconto = formaPagamento === 'boleto' ? subtotal * 0.05 : 0;
-    const total = subtotal - desconto;
+    total = subtotal - desconto;
 
     document.getElementById('subtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
     document.getElementById('total').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
@@ -141,7 +144,6 @@ function calcularTotais() {
         discountRow.style.display = 'none';
     }
 }
-
 
 
 
@@ -198,7 +200,7 @@ function configurarEventos() {
     document.getElementById('btnContinuar').addEventListener('click', function() {
         if (validarFormulario()) {
             salvarDados();
-            window.location.href = 'resumo.html';
+            window.location.href = 'resumo';
         }
     });
 }
@@ -244,9 +246,13 @@ function validarFormulario() {
 // Salvar dados no localStorage
 function salvarDados() {
     const dados = {
-        endereco: enderecoSelecionado,
+        clientId : auth.clientId,
         formaPagamento: formaPagamento,
+        total: total,
+        subtotal: subtotal,
+        endereco: enderecoSelecionado,
         produtos: product.items
+
     };
 
     if (formaPagamento === 'cartao') {
