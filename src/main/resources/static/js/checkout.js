@@ -1,9 +1,9 @@
-// Inicialização
+    // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
     loadAddresses()
     renderizarResumo();
     //configurarEventos();
-    //calcularTotais();
+    calcularTotais();
 });
 
 
@@ -26,7 +26,7 @@ if (botaoFinalizar) {
     botaoFinalizar.addEventListener("click", verificarLogado);
 }
 
-//LISTAR ENDEREÇOS
+    //LISTAR ENDEREÇOS
  async function loadAddresses(){
            const resp = await fetch(`/api/clients/${auth.clientId}/addresses`)
            if (!resp.ok) { addressList.innerHTML = '<p>Não foi possível carregar endereços.</p>'; return }
@@ -51,7 +51,7 @@ let formaPagamento = "cartao";
 
 
 
-//Renderizar resumo lateral
+    //Renderizar resumo lateral
 function renderizarResumo() {
     const summaryItems = document.getElementById('summaryItems');
 
@@ -63,3 +63,22 @@ function renderizarResumo() {
     `).join('');
 }
 
+
+
+    // Calcular totais
+function calcularTotais() {
+    const subtotal = product.items.reduce((acc, p) => acc + (p.price * p.qty), 0);
+    const desconto = formaPagamento === 'boleto' ? subtotal * 0.05 : 0;
+    const total = subtotal - desconto;
+
+    document.getElementById('subtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+    document.getElementById('total').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+
+    const discountRow = document.getElementById('discountRow');
+    if (formaPagamento === 'boleto') {
+        discountRow.style.display = 'flex';
+        document.getElementById('discount').textContent = `- R$ ${desconto.toFixed(2).replace('.', ',')}`;
+    } else {
+        discountRow.style.display = 'none';
+    }
+}
