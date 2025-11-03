@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Pedidos - Minha Loja</title>
+    <link rel="stylesheet" th:href="@{/css/pedido.css}">
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+</head>
+<body>
+<!-- Menu de Navegação -->
+<header class="cabecalho">
+    <img th:src="@{/img/logo.png}" width="45" height="45" alt="logo">
+    <div>PETSHOP</div>
+    <div class="right-icons">
+        <a style="margin-right: 20px; color:white" href="/perfil">Perfil</a>
+        <a style=" color:white" href="/loja">Voltar para a Loja</a>
+    </div>
+</header>
+
+<!-- Container Principal -->
+<div class="container">
+    <!-- Seção de Título e Filtros -->
+    <section class="checkout-section">
+        <h2>📦 Meus Pedidos</h2>
+    </section>
+
+    <!-- Lista de Pedidos -->
+    <div id="listaPedidos" class="pedidos-lista">
+        <!-- Pedidos serão carregados aqui -->
+    </div>
+
+    <!-- Mensagem quando não há pedidos -->
+    <div id="semPedidos" class="empty-state" style="display: none;">
+        <p>Você ainda não tem pedidos. <a href="index.html">Fazer uma compra</a></p>
+    </div>
+</div>
+
+<!-- Modal de Detalhes -->
+<div id="detalhesModal" class="modal" style="display: none;">
+    <div class="modal-content modal-detalhes">
+        <button class="close-btn" id="closeModal">&times;</button>
+        <h2>Detalhes do Pedido</h2>
+        <div id="conteudoDetalhes"></div>
+    </div>
+</div>
+
+<script th:src="@{/js/pedido.js}"></script>
+</body>
+</html>

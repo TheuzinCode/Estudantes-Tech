@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/login",
+                                "/pedido",
                                 "/resumo",
                                 "/orders",
                                 "/api/orders",

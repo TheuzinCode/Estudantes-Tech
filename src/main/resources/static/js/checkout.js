@@ -100,8 +100,6 @@ function renderizarFrete(){
                                 </div>
                                 `;
     }
-
-
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
@@ -118,7 +116,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     let subtotal = 0;
 
 function calcularTotais() {
-    let valueFrete = 0;
+
+ let valueFrete = 0;
      if(frete === "premium"){
         valueFrete = 15
      }

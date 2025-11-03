@@ -30,4 +30,8 @@ public class LoginController {
 
     @GetMapping("/resumo")
     public String resumoPage() {return "resumo";}
+
+    @GetMapping("/pedido")
+    public String pedidoPage() {return "pedido";}
+
 }

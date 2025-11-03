@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resumo da Compra</title>
     <link rel="stylesheet" th:href="@{/css/checkout.css}">
+
+
 </head>
 <body>
 <div class="container">
@@ -47,6 +49,9 @@
                     <div class="summary-row">
                         <span>Subtotal</span>
                         <span id="subtotalResumo">R$ 0,00</span>
+                    </div>
+                    <div class="summary-items" id="frete">
+                        <!-- Itens serão inseridos via JavaScript -->
                     </div>
                     <div class="summary-row" id="discountRowResumo" style="display: none;">
                         <span class="discount">Desconto (5%)</span>

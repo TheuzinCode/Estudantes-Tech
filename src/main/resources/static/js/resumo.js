@@ -5,10 +5,12 @@ document.addEventListener('DOMContentLoaded', function() {
     carregarDados();
     renderizarResumo();
     configurarEventos();
+    renderizarFrete();
 });
 
 const pedido = JSON.parse(localStorage.getItem('pedido'))
 console.log("Pedido carregado do localStorage:", pedido);
+const frete = localStorage.getItem('cart_shipping_v1')
 
 function carregarDados() {
     if (!pedido) {
@@ -17,6 +19,9 @@ function carregarDados() {
         return;
     }
 }
+
+
+
 
 function renderizarResumo() {
     // Renderizar endereço
@@ -58,14 +63,30 @@ function renderizarResumo() {
         </div>
     `).join('');
 
+
+    let valorFrete = 0
+
+
+    if(frete == "premium"){
+        valorFrete = 15
+    }if(frete == "expresso"){
+        valorFrete = 10
+    }if(frete == "economico"){
+        valorFrete = 5
+    }
+
     // Calcular e renderizar totais
-    const subtotal = pedido.subtotal;
-    const desconto = pedido.formaPagamento === 'boleto' ? subtotal * 0.05 : 0;
-    const total = subtotal - desconto;
+    const subtotal = pedido.produtos.reduce((acc, p)  => acc + (p.price * p.qty), 0);
+
+    const total = subtotal + valorFrete
+
+    console.log(total)
+    const desconto = pedido.formaPagamento === 'boleto' ? total * 0.05 : 0;
+    const totalFinal = total - desconto;
 
 
-    document.getElementById('subtotalResumo').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
-    document.getElementById('totalResumo').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    document.getElementById('subtotalResumo').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+    document.getElementById('totalResumo').textContent = `R$ ${totalFinal.toFixed(2).replace('.', ',')}`;
 
     if (pedido.formaPagamento === 'boleto') {
         document.getElementById('discountRowResumo').style.display = 'flex';
@@ -86,8 +107,34 @@ function configurarEventos() {
     });
 }
 
-    let data;
+function renderizarFrete(){
+    const selectFrete = document.getElementById('frete');
 
+    console.log(frete)
+    if(frete == "premium"){
+        selectFrete.innerHTML =`<div class="summary-item">
+                                 <span class="summary-item-name">frete premium</span>
+                                 <span id="valueFrete">R$ 15.00</span>
+                                </div>
+                                `;
+    }
+    if(frete == "expresso"){
+        selectFrete.innerHTML =`<div class="summary-item">
+                                 <span class="summary-item-name">frete Expresso</span>
+                                 <span id="valueFrete">R$ 10.00</span>
+                                </div>
+                                `;
+    }
+    if(frete == "economico"){
+        selectFrete.innerHTML =`<div class="summary-item">
+                                 <span class="summary-item-name">frete Econômico</span>
+                                 <span id="valueFrete">R$ 5.00</span>
+                                </div>
+                                `;
+    }
+}
+
+    let data;
 
 
  async function confirmarPedido() {
