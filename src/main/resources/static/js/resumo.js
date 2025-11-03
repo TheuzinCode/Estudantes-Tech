@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 const pedido = JSON.parse(localStorage.getItem('pedido'))
-
-console.log(pedido)
+console.log("Pedido carregado do localStorage:", pedido);
 
 function carregarDados() {
     if (!pedido) {
@@ -81,13 +80,13 @@ function configurarEventos() {
     });
 
     // Botão confirmar
-    document.getElementById('btnConfirmar').addEventListener('click', function() {
-        confirmarPedido();
+    document.getElementById('btnConfirmar').addEventListener('click', async function() {
+        await confirmarPedido();
         window.location.href = '/loja';
     });
 }
 
-
+    let data;
 
 
 
@@ -112,12 +111,22 @@ function configurarEventos() {
 
         })
 
+        data = await resp.json();
+
+        console.log("data " + data.orderId)
+
+
         if (!resp.ok) {
             const errorText = await resp.text();
             throw new Error(`Erro ao confirmar pedido: ${errorText}`);
         }
 
-        alert('Pedido confirmado com sucesso!');
+        alert(`Pedido confirmado com sucesso!
+              Número do pedido: ${data.orderId}
+              Total: ${data.totalValue}`);
+
+
+
                 localStorage.removeItem('pedido');
                 localStorage.removeItem('cart_v1');
 
@@ -125,4 +134,5 @@ function configurarEventos() {
     }catch (err) {
          alert('Erro ao conectar com o servidor: ' + (err?.message || err))
     }
+
 }

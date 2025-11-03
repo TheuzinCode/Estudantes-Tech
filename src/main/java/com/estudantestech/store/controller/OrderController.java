@@ -1,25 +1,27 @@
 package com.estudantestech.store.controller;
 
+import com.estudantestech.store.domain.order.Order;
 import com.estudantestech.store.domain.order.OrderRequestDTO;
 import com.estudantestech.store.domain.order.OrderResponseDTO;
 import com.estudantestech.store.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/api")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
 
-    @PostMapping
+    @PostMapping("/orders")
     public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderDTO){
         OrderResponseDTO createOrder = orderService.createOrder(orderDTO);
         return ResponseEntity.ok(createOrder);
     }
+
 }

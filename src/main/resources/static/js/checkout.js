@@ -1,14 +1,7 @@
 
 
     // Inicialização
-document.addEventListener('DOMContentLoaded', async function() {
-    await loadAddresses();
-    console.log("Endereços após loadAddresses:", enderecos);
-    renderizarResumo();
-    configurarEventos();
-    calcularTotais();
-    renderizarFrete()
-});
+
 
 let enderecos = [];
 let enderecoSelecionado = null;
@@ -18,6 +11,7 @@ const botaoFinalizar = document.getElementById('botaoFinalizarCompra')
 const auth = JSON.parse(localStorage.getItem('clientAuth'))
 const product = JSON.parse(localStorage.getItem('cart_v1'))
 const frete = localStorage.getItem('cart_shipping_v1')
+const addressList = document.getElementById('addressList');
 
 
 
@@ -44,7 +38,6 @@ if (botaoFinalizar) {
            if (!resp.ok) { addressList.innerHTML = '<p>Não foi possível carregar endereços.</p>'; return }
            const list = await resp.json()
            enderecos = list;
-            const addressList = document.getElementById('addressList');
             addressList.innerHTML = list.map((endereco, index) => `
                     <label class="address-option">
                         <input type="radio" name="address" value="${endereco.adressId}" ${index === 0 ? 'checked' : ''}>
@@ -55,14 +48,12 @@ if (botaoFinalizar) {
                         </div>
                    </label>
             `).join('');
-            console.log(enderecos)
 
                 // Seleção de endereço
                 document.querySelectorAll('input[name="address"]').forEach(radio => {
                     radio.addEventListener('change', function() {
                         const enderecoId = parseInt(this.value);
                         enderecoSelecionado = enderecos.find(e => e.adressId === enderecoId);
-                         console.log("Endereço selecionado:", enderecoSelecionado);
                     });
                 });
                  if (enderecos.length > 0) {
@@ -112,6 +103,14 @@ function renderizarFrete(){
 
 
 }
+
+document.addEventListener('DOMContentLoaded', async function() {
+    await loadAddresses();
+    renderizarResumo();
+    configurarEventos();
+    calcularTotais();
+    renderizarFrete()
+});
 
 
     // Calcular totais
