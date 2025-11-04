@@ -12,6 +12,8 @@ const pedido = JSON.parse(localStorage.getItem('pedido'))
 console.log("Pedido carregado do localStorage:", pedido);
 const frete = localStorage.getItem('cart_shipping_v1')
 
+
+
 function carregarDados() {
     if (!pedido) {
         alert('Nenhum pedido encontrado. Redirecionando para o checkout...');
@@ -101,7 +103,8 @@ function configurarEventos() {
     });
 
     // Botão confirmar
-    document.getElementById('btnConfirmar').addEventListener('click', async function() {
+    document.getElementById('btnConfirmar').addEventListener('click', async function(e) {
+        e.preventDefault()
         await confirmarPedido();
         window.location.href = '/loja';
     });
@@ -138,6 +141,7 @@ function renderizarFrete(){
 
 
  async function confirmarPedido() {
+
         const order = {
           clientId: pedido.clientId,
           totalValue: pedido.total,
@@ -174,8 +178,6 @@ function renderizarFrete(){
 
 
 
-                localStorage.removeItem('pedido');
-                localStorage.removeItem('cart_v1');
 
 
     }catch (err) {

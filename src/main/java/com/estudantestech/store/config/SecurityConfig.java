@@ -21,6 +21,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/login",
                                 "/pedido",
+                                "/api/pedido/**",
+                                "/pedido/**",
                                 "/resumo",
                                 "/orders",
                                 "/api/orders",
@@ -36,10 +38,14 @@ public class SecurityConfig {
                                 "/loja",
                                 "/loja/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, " /swagger-ui/index.html").permitAll()
-                        .requestMatchers(HttpMethod.POST, " /swagger-ui").permitAll()
-                        .requestMatchers(HttpMethod.POST, " /swagger-ui.html").permitAll()
-                        .requestMatchers(HttpMethod.POST, " /swagger-ui/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/pedido/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/pedido").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/pedido/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/pedido").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/swagger-ui/index.html").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/swagger-ui").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/swagger-ui.html").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/clients").permitAll()

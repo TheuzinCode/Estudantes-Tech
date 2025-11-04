@@ -24,4 +24,13 @@ public class OrderController {
         return ResponseEntity.ok(createOrder);
     }
 
+
+    @GetMapping("/pedido/{clientId}")
+    public ResponseEntity<List<Order>> buscarPedidos(@PathVariable UUID clientId){
+
+        List<Order> pedidos = orderService.burcarPedido(clientId);
+
+        return ResponseEntity.ok(pedidos);
+    }
+
 }

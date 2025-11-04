@@ -3,6 +3,8 @@ package com.estudantestech.store.domain.order;
 
 import com.estudantestech.store.domain.client.Client;
 import com.estudantestech.store.domain.product.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +28,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "clientId")
+    @JsonIgnore
     private Client client;
 
     private BigDecimal totalValue;
@@ -40,6 +43,7 @@ public class Order {
     private Instant creationTimestamp;
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ItemOrder> itens = new ArrayList<>();
 
     public void adicionarItens(ItemOrder item){
