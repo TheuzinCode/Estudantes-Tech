@@ -177,7 +177,8 @@ function renderizarFrete(){
               Total: ${data.totalValue}`);
 
 
-
+        localStorage.removeItem("pedido")
+        localStorage.removeItem("cart_v1")
 
 
     }catch (err) {
