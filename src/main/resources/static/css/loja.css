@@ -250,3 +250,14 @@ body.cart-open {
 #btn-logout {
     cursor: pointer;
 }
+
+.btn-finalizar {
+    background: #28a79b;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 128px;
+    cursor: pointer;
+    font-weight: 700;
+    text-decoration: none;
+}
