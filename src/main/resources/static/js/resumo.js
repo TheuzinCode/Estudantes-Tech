@@ -175,7 +175,7 @@ function renderizarFrete(){
 
         alert(`Pedido confirmado com sucesso!
               Número do pedido: ${data.orderId}
-              Total: ${data.totalValue}`);
+              Total: ${data.totalValue.toFixed(2).replace('.', ',')}`);
 
 
         localStorage.removeItem("pedido")
