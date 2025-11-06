@@ -1,269 +1,404 @@
-
-
-    // Inicialização
-
+// Inicialização
 
 let enderecos = [];
 let enderecoSelecionado = null;
 let formaPagamento = "cartao";
 
-const botaoFinalizar = document.getElementById('botaoFinalizarCompra')
-const auth = JSON.parse(localStorage.getItem('clientAuth'))
-const product = JSON.parse(localStorage.getItem('cart_v1'))
-const frete = localStorage.getItem('cart_shipping_v1')
-const addressList = document.getElementById('addressList');
-
-
-
+const botaoFinalizar = document.getElementById("botaoFinalizarCompra");
+const auth = JSON.parse(localStorage.getItem("clientAuth"));
+const product = JSON.parse(localStorage.getItem("cart_v1"));
+const frete = localStorage.getItem("cart_shipping_v1");
+const addressList = document.getElementById("addressList");
+const adicionar = document.getElementById("addressForm");
 
 function verificarLogado(botaoFinalizar) {
-    if (!auth || auth.logged !== true || !auth.clientId) {
-               event.preventDefault();
-               window.alert("você precisar estar logado para finalizar a compra")
-               window.location.href = '/entrar'
-    }
-
+  if (!auth || auth.logged !== true || !auth.clientId) {
+    event.preventDefault();
+    window.alert("você precisar estar logado para finalizar a compra");
+    window.location.href = "/entrar";
+  }
 }
 
 if (botaoFinalizar) {
-    botaoFinalizar.addEventListener("click", verificarLogado);
+  botaoFinalizar.addEventListener("click", verificarLogado);
 }
 
+if (adicionar) {
+  adicionar.addEventListener("click", addCampoNovoEndereco);
+}
 
+function addCampoNovoEndereco(event) {
+  const selectCampo = document.getElementById("novoEndereco");
+  selectCampo.innerHTML = ` <form id="addressForm" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; align-items:end;">
+                                        <div class="form-row">
+                                            <label for="addr-cep">CEP</label>
+                                            <input type="text" id="addr-cep" name="cep" placeholder="00000-000">
+                                        </div>
+                                        <div class="form-row">
+                                            <label for="addr-street">Logradouro</label>
+                                            <input type="text" id="addr-street" name="street" readonly>
+                                        </div>
+                                        <div class="form-row">
+                                            <label for="addr-neighborhood">Bairro</label>
+                                            <input type="text" id="addr-neighborhood" name="neighborhood" readonly>
+                                        </div>
+                                        <div class="form-row">
+                                            <label for="addr-city">Cidade</label>
+                                            <input type="text" id="addr-city" name="city" readonly>
+                                        </div>
+                                        <div class="form-row">
+                                            <label for="addr-state">Estado</label>
+                                            <input type="text" id="addr-state" name="state" readonly>
+                                        </div>
+                                        <div class="form-row">
+                                            <label for="addr-number">Número</label>
+                                            <input type="text" id="addr-number" name="number" placeholder="Número">
+                                        </div>
+                                        <div class="form-row">
+                                            <label for="addr-complement">Complemento</label>
+                                            <input type="text" id="addr-complement" name="complement" placeholder="Apto, bloco, etc.">
+                                        </div>
+                                        <div class="actions" style="grid-column: 1 / -1;">
+                                            <button type="submit">Salvar</button>
+                                        </div>
+                                    </form>
+                                    `;
 
+  const addressList = document.getElementById("address-list");
+  const addressForm = document.getElementById("addressForm");
+  const addrCep = document.getElementById("addr-cep");
+  const addrStreet = document.getElementById("addr-street");
+  const addrNeighborhood = document.getElementById("addr-neighborhood");
+  const addrCity = document.getElementById("addr-city");
+  const addrState = document.getElementById("addr-state");
+  const addrNumber = document.getElementById("addr-number");
+  const addrComplement = document.getElementById("addr-complement");
 
-    //LISTAR ENDEREÇOS
- async function loadAddresses(){
-           const resp = await fetch(`/api/clients/${auth.clientId}/addresses`)
-           if (!resp.ok) { addressList.innerHTML = '<p>Não foi possível carregar endereços.</p>'; return }
-           const list = await resp.json()
-           enderecos = list;
-            addressList.innerHTML = list.map((endereco, index) => `
+  function digitsOnly(v) {
+    return (v || "").replace(/\D+/g, "");
+  }
+
+  //FORMATAR CEP
+  function maskCep(v) {
+    const d = digitsOnly(v).slice(0, 8);
+    const p1 = d.slice(0, 5);
+    const p2 = d.slice(5, 8);
+    return p2 ? `${p1}-${p2}` : p1;
+  }
+
+  async function procurarEndereco(procurarCep) {
+    const digitoCep = digitsOnly(procurarCep);
+    if (digitoCep.length !== 8) return;
+
+    const resp = await fetch(`https://viacep.com.br/ws/${digitoCep}/json/`);
+    const data = await resp.json();
+
+    if (addrStreet) addrStreet.value = data.logradouro || "";
+    if (addrNeighborhood) addrNeighborhood.value = data.bairro || "";
+    if (addrCity) addrCity.value = data.localidade || "";
+    if (addrState) addrState.value = data.uf || "";
+  }
+
+  if (addrCep) {
+    addrCep.addEventListener("input", function () {
+      const masked = maskCep(addrCep.value);
+      addrCep.value = masked;
+
+      if (digitsOnly(masked).length === 8) {
+        procurarEndereco(masked);
+      } else {
+        if (addrStreet) addrStreet.value = "";
+        if (addrNeighborhood) addrNeighborhood.value = "";
+        if (addrCity) addrCity.value = "";
+        if (addrState) addrState.value = "";
+      }
+    });
+
+    addrCep.addEventListener("blur", function () {
+      procurarEndereco(addrCep.value);
+    });
+  }
+
+  async function salvarEndereco(addressForm) {
+    addressForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const cep = (addrCep?.value || "").trim();
+      const number = (addrNumber?.value || "").trim();
+
+      const payload = {
+        cep,
+        street: (addrStreet?.value || "").trim(),
+        number,
+        complement: (addrComplement?.value || "").trim(),
+        neighborhood: (addrNeighborhood?.value || "").trim(),
+        city: (addrCity?.value || "").trim(),
+        state: (addrState?.value || "").trim(),
+      };
+
+      const resp = await fetch(`/api/clients/${auth.clientId}/addresses`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (resp.ok) {
+        alert("Endereço salvo com sucesso!");
+        await loadAddresses();
+      }
+    });
+  }
+
+  salvarEndereco(addressForm);
+}
+
+//LISTAR ENDEREÇOS
+async function loadAddresses() {
+  const resp = await fetch(`/api/clients/${auth.clientId}/addresses`);
+  if (!resp.ok) {
+    addressList.innerHTML = "<p>Não foi possível carregar endereços.</p>";
+    return;
+  }
+  const list = await resp.json();
+  enderecos = list;
+  addressList.innerHTML = list
+    .map(
+      (endereco, index) => `
                     <label class="address-option">
-                        <input type="radio" name="address" value="${endereco.adressId}" ${index === 0 ? 'checked' : ''}>
+                        <input type="radio" name="address" value="${
+                          endereco.adressId
+                        }" ${index === 0 ? "checked" : ""}>
                        <div class="address-card">
                           <p>${endereco.street} - ${endereco.number} <br>
                           ${endereco.neighborhood} - ${endereco.city}<br>
                             CEP: ${endereco.cep}</p>
                         </div>
                    </label>
-            `).join('');
+            `
+    )
+    .join("");
 
-                // Seleção de endereço
-                document.querySelectorAll('input[name="address"]').forEach(radio => {
-                    radio.addEventListener('change', function() {
-                        const enderecoId = parseInt(this.value);
-                        enderecoSelecionado = enderecos.find(e => e.adressId === enderecoId);
-                    });
-                });
-                 if (enderecos.length > 0) {
-                     enderecoSelecionado = enderecos[0];
-                    }
-
- }
-
-
-    //Renderizar resumo lateral
-function renderizarResumo() {
-    const summaryItems = document.getElementById('summaryItems');
-
-    summaryItems.innerHTML = product.items.map((produto) => `
-        <div class="summary-item">
-            <span class="summary-item-name">${produto.qty}x ${produto.name}</span>
-            <span>R$ ${(produto.price * produto.qty).toFixed(2).replace('.', ',')}</span>
-        </div>
-    `).join('');
+  // Seleção de endereço
+  document.querySelectorAll('input[name="address"]').forEach((radio) => {
+    radio.addEventListener("change", function () {
+      const enderecoId = parseInt(this.value);
+      enderecoSelecionado = enderecos.find((e) => e.adressId === enderecoId);
+    });
+  });
+  if (enderecos.length > 0) {
+    enderecoSelecionado = enderecos[0];
+  }
 }
 
-function renderizarFrete(){
-    const selectFrete = document.getElementById('frete');
+//Renderizar resumo lateral
+function renderizarResumo() {
+  const summaryItems = document.getElementById("summaryItems");
 
-    console.log(frete)
-    if(frete == "premium"){
-        selectFrete.innerHTML =`<div class="summary-item">
+  summaryItems.innerHTML = product.items
+    .map(
+      (produto) => `
+        <div class="summary-item">
+            <span class="summary-item-name">${produto.qty}x ${
+        produto.name
+      }</span>
+            <span>R$ ${(produto.price * produto.qty)
+              .toFixed(2)
+              .replace(".", ",")}</span>
+        </div>
+    `
+    )
+    .join("");
+}
+
+function renderizarFrete() {
+  const selectFrete = document.getElementById("frete");
+
+  console.log(frete);
+  if (frete == "premium") {
+    selectFrete.innerHTML = `<div class="summary-item">
                                  <span class="summary-item-name">frete premium</span>
                                  <span id="valueFrete">R$ 15.00</span>
                                 </div>
                                 `;
-    }
-    if(frete == "expresso"){
-        selectFrete.innerHTML =`<div class="summary-item">
+  }
+  if (frete == "expresso") {
+    selectFrete.innerHTML = `<div class="summary-item">
                                  <span class="summary-item-name">frete Expresso</span>
                                  <span id="valueFrete">R$ 10.00</span>
                                 </div>
                                 `;
-    }
-    if(frete == "economico"){
-        selectFrete.innerHTML =`<div class="summary-item">
+  }
+  if (frete == "economico") {
+    selectFrete.innerHTML = `<div class="summary-item">
                                  <span class="summary-item-name">frete Econômico</span>
                                  <span id="valueFrete">R$ 5.00</span>
                                 </div>
                                 `;
-    }
+  }
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
-    await loadAddresses();
-    renderizarResumo();
-    configurarEventos();
-    calcularTotais();
-    renderizarFrete()
+//EXECUTAR ASSIM QUE ABRIR A TELA
+document.addEventListener("DOMContentLoaded", async function () {
+  await loadAddresses();
+  renderizarResumo();
+  configurarEventos();
+  calcularTotais();
+  renderizarFrete();
 });
 
-
-    // Calcular totais
-    let total = 0;
-    let subtotal = 0;
+// Calcular totais
+let total = 0;
+let subtotal = 0;
 
 function calcularTotais() {
+  let valueFrete = 0;
+  if (frete === "premium") {
+    valueFrete = 15;
+  }
+  if (frete === "expresso") {
+    valueFrete = 10;
+  }
+  if (frete === "economico") {
+    valueFrete = 5;
+  }
+  subtotal =
+    valueFrete + product.items.reduce((acc, p) => acc + p.price * p.qty, 0);
+  const desconto = formaPagamento === "boleto" ? subtotal * 0.05 : 0;
+  total = subtotal - desconto;
 
- let valueFrete = 0;
-     if(frete === "premium"){
-        valueFrete = 15
-     }
-     if(frete === "expresso"){
-         valueFrete = 10
-     }
-     if(frete === "economico"){
-         valueFrete = 5
-     }
-    subtotal = valueFrete + (product.items.reduce((acc, p) => acc + (p.price * p.qty), 0));
-    const desconto = formaPagamento === 'boleto' ? subtotal * 0.05 : 0;
-    total = subtotal - desconto;
+  document.getElementById("subtotal").textContent = `R$ ${subtotal
+    .toFixed(2)
+    .replace(".", ",")}`;
+  document.getElementById("total").textContent = `R$ ${total
+    .toFixed(2)
+    .replace(".", ",")}`;
 
-    document.getElementById('subtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-    document.getElementById('total').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
-
-    const discountRow = document.getElementById('discountRow');
-    if (formaPagamento === 'boleto') {
-        discountRow.style.display = 'flex';
-        document.getElementById('discount').textContent = `- R$ ${desconto.toFixed(2).replace('.', ',')}`;
-    } else {
-        discountRow.style.display = 'none';
-    }
+  const discountRow = document.getElementById("discountRow");
+  if (formaPagamento === "boleto") {
+    discountRow.style.display = "flex";
+    document.getElementById("discount").textContent = `- R$ ${desconto
+      .toFixed(2)
+      .replace(".", ",")}`;
+  } else {
+    discountRow.style.display = "none";
+  }
 }
-
-
-
 
 //Configurar eventos
 function configurarEventos() {
+  // Seleção de forma de pagamento
+  document.querySelectorAll('input[name="payment"]').forEach((radio) => {
+    radio.addEventListener("change", function () {
+      formaPagamento = this.value;
 
+      const cartaoForm = document.getElementById("cartaoForm");
+      const boletoInfo = document.getElementById("boletoInfo");
 
-    // Seleção de forma de pagamento
-    document.querySelectorAll('input[name="payment"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            formaPagamento = this.value;
+      if (formaPagamento === "cartao") {
+        cartaoForm.style.display = "block";
+        boletoInfo.style.display = "none";
+      } else {
+        cartaoForm.style.display = "none";
+        boletoInfo.style.display = "block";
+      }
 
-            const cartaoForm = document.getElementById('cartaoForm');
-            const boletoInfo = document.getElementById('boletoInfo');
-
-            if (formaPagamento === 'cartao') {
-                cartaoForm.style.display = 'block';
-                boletoInfo.style.display = 'none';
-            } else {
-                cartaoForm.style.display = 'none';
-                boletoInfo.style.display = 'block';
-            }
-
-            calcularTotais();
-        });
+      calcularTotais();
     });
+  });
 
-    // Formatação do número do cartão
-    const cardNumber = document.getElementById('cardNumber');
-    cardNumber.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\s/g, '');
-        let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-        e.target.value = formattedValue;
-    });
+  // Formatação do número do cartão
+  const cardNumber = document.getElementById("cardNumber");
+  cardNumber.addEventListener("input", function (e) {
+    let value = e.target.value.replace(/\s/g, "");
+    let formattedValue = value.match(/.{1,4}/g)?.join(" ") || value;
+    e.target.value = formattedValue;
+  });
 
-    // Formatação da data de validade
-    const cardExpiry = document.getElementById('cardExpiry');
-    cardExpiry.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length >= 2) {
-            value = value.slice(0, 2) + '/' + value.slice(2, 4);
-        }
-        e.target.value = value;
-    });
+  // Formatação da data de validade
+  const cardExpiry = document.getElementById("cardExpiry");
+  cardExpiry.addEventListener("input", function (e) {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length >= 2) {
+      value = value.slice(0, 2) + "/" + value.slice(2, 4);
+    }
+    e.target.value = value;
+  });
 
-    // Apenas números no CVV
-    const cardCVV = document.getElementById('cardCVV');
-    cardCVV.addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/\D/g, '');
-    });
+  // Apenas números no CVV
+  const cardCVV = document.getElementById("cardCVV");
+  cardCVV.addEventListener("input", function (e) {
+    e.target.value = e.target.value.replace(/\D/g, "");
+  });
 
-    // Botão continuar
-    document.getElementById('btnContinuar').addEventListener('click', function() {
-        if (validarFormulario()) {
-            salvarDados();
-            window.location.href = 'resumo';
-        }
+  // Botão continuar
+  document
+    .getElementById("btnContinuar")
+    .addEventListener("click", function () {
+      if (validarFormulario()) {
+        salvarDados();
+        window.location.href = "resumo";
+      }
     });
 }
 
-
 // Validar formulário
 function validarFormulario() {
-    if (!enderecoSelecionado) {
-        alert('Por favor, selecione um endereço de entrega.');
-        return false;
+  if (!enderecoSelecionado) {
+    alert("Por favor, selecione um endereço de entrega.");
+    return false;
+  }
+
+  if (formaPagamento === "cartao") {
+    const cardNumber = document.getElementById("cardNumber").value;
+    const cardName = document.getElementById("cardName").value;
+    const cardExpiry = document.getElementById("cardExpiry").value;
+    const cardCVV = document.getElementById("cardCVV").value;
+
+    if (!cardNumber || cardNumber.replace(/\s/g, "").length < 16) {
+      alert("Por favor, insira um número de cartão válido.");
+      return false;
     }
 
-    if (formaPagamento === 'cartao') {
-        const cardNumber = document.getElementById('cardNumber').value;
-        const cardName = document.getElementById('cardName').value;
-        const cardExpiry = document.getElementById('cardExpiry').value;
-        const cardCVV = document.getElementById('cardCVV').value;
-
-        if (!cardNumber || cardNumber.replace(/\s/g, '').length < 16) {
-            alert('Por favor, insira um número de cartão válido.');
-            return false;
-        }
-
-        if (!cardName || cardName.trim().length < 3) {
-            alert('Por favor, insira o nome completo do titular do cartão.');
-            return false;
-        }
-
-        if (!cardExpiry || cardExpiry.length < 5) {
-            alert('Por favor, insira a data de validade do cartão.');
-            return false;
-        }
-
-        if (!cardCVV || cardCVV.length < 3) {
-            alert('Por favor, insira o código CVV do cartão.');
-            return false;
-        }
+    if (!cardName || cardName.trim().length < 3) {
+      alert("Por favor, insira o nome completo do titular do cartão.");
+      return false;
     }
 
-    return true;
+    if (!cardExpiry || cardExpiry.length < 5) {
+      alert("Por favor, insira a data de validade do cartão.");
+      return false;
+    }
+
+    if (!cardCVV || cardCVV.length < 3) {
+      alert("Por favor, insira o código CVV do cartão.");
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // Salvar dados no localStorage
 function salvarDados() {
-    const dados = {
-        clientId : auth.clientId,
-        formaPagamento: formaPagamento,
-        total: total,
-        subtotal: subtotal,
-        endereco: enderecoSelecionado,
-        produtos: product.items
+  const dados = {
+    clientId: auth.clientId,
+    formaPagamento: formaPagamento,
+    total: total,
+    subtotal: subtotal,
+    endereco: enderecoSelecionado,
+    produtos: product.items,
+  };
 
+  if (formaPagamento === "cartao") {
+    const cardNumber = document.getElementById("cardNumber").value;
+    const cardName = document.getElementById("cardName").value;
+    const installments = document.getElementById("installments").value;
+
+    dados.cartao = {
+      numero: cardNumber,
+      nome: cardName,
+      parcelas: installments,
     };
+  }
 
-    if (formaPagamento === 'cartao') {
-        const cardNumber = document.getElementById('cardNumber').value;
-        const cardName = document.getElementById('cardName').value;
-        const installments = document.getElementById('installments').value;
-
-        dados.cartao = {
-            numero: cardNumber,
-            nome: cardName,
-            parcelas: installments
-        };
-    }
-
-    localStorage.setItem('pedido', JSON.stringify(dados));
+  localStorage.setItem("pedido", JSON.stringify(dados));
 }

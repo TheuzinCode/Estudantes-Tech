@@ -54,9 +54,10 @@ function renderizarResumo() {
 
     // Renderizar produtos
     const produtosResumo = document.getElementById('produtosResumo');
+
     produtosResumo.innerHTML = pedido.produtos.map(produto => `
         <div class="produto-item">
-            <img src="/api/placeholder/80/80" alt="${produto.name}" class="produto-imagem">
+
             <div class="produto-info">
                 <h4>${produto.name}</h4>
                 <p>Quantidade: ${produto.qty}</p>

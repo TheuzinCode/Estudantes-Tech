@@ -81,10 +81,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const addrNumber = document.getElementById('addr-number')
     const addrComplement = document.getElementById('addr-complement')
 
+    //FORMATAR CEP
     function digitsOnly(v){
         return (v || '').replace(/\D+/g, '')
     }
 
+    //FORMATAR CEP
     function maskCep(v){
         const d = digitsOnly(v).slice(0,8)
         const p1 = d.slice(0,5)
@@ -92,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return p2 ? `${p1}-${p2}` : p1
     }
 
+    //PUXAR ENDERECO
     async function fetchAndFillAddress(rawCep){
         const cepDigits = digitsOnly(rawCep)
 

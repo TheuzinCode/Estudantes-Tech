@@ -38,6 +38,8 @@ public class SecurityConfig {
                                 "/loja",
                                 "/loja/**"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/checkout/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/checkout").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/pedido/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/pedido").permitAll()
                         .requestMatchers(HttpMethod.GET, "/pedido/**").permitAll()
