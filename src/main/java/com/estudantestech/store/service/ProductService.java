@@ -65,6 +65,7 @@ public class ProductService {
         productRepository.delete(product);
     }
 
+    //procura de produtos
     public List<Product> search(String name){
         if (name != null){
             return productRepository.findByNameContainingIgnoreCase(name);

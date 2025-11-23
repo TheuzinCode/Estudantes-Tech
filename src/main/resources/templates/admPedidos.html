@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos</title>
+    <link rel="stylesheet" th:href="@{/css/produtos.css}">
+</head>
+
+<body>
+<header class="header">
+    <div class="logo">
+        <span> PETSHOP</span>
+    </div>
+    <div class="user-info">
+        <p></p>
+        <a href="/login">Sair</a>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="controls-bar">
+        <h2 class="section-title">Pedidos</h2>
+        <div class="controls">
+            <form th:action="@{/products}" method="get">
+                <input type="text" name="name" placeholder="Pesquisar" th:value="${param.name}">
+                <button type="submit" class="btn-search">🔍</button>
+            </form>
+        </div>
+    </div>
+
+    <table class="product-table">
+        <thead>
+        <tr>
+            <th>Código</th>
+            <th>Data</th>
+            <th style="text-align: center;">Valor</th>
+            <th style="text-align: center;">Status</th>
+            <th>Opções</th>
+        </tr>
+        </thead>
+        <tbody id="tablePedidos">
+        <tr th:each="p : ${products}">
+            <td th:text="${p.idProduct}"></td>
+            <td th:text="${p.price}"></td>
+            <td th:text="${p.active}"></td>
+            <td>
+                <div class="action-buttons">
+                    <button class="btn-alterar"><a th:href="@{/produtos/editar/{id}(id=${p.idProduct})}"
+                                                   class="btn-alterar">Alterar</a></button>
+                    </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination" th:if="${productPage != null}">
+        <div class="page-info" style="margin: 12px 0;">
+            <span th:if="${productPage.totalElements > 0}">
+                Página <strong th:text="${productPage.number + 1}">1</strong> de
+                <strong th:text="${productPage.totalPages}">1</strong>
+                — Total: <strong th:text="${productPage.totalElements}">0</strong>
+            </span>
+            <span th:if="${productPage.totalElements == 0}">Nenhum produto encontrado</span>
+        </div>
+        <div class="page-links" style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+            <a th:if="${productPage.hasPrevious()}"
+               th:href="@{/products(page=${productPage.number - 1}, name=${name})}">Anterior</a>
+
+            <span th:if="${productPage.totalPages > 1}"
+                  th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}">
+                <a th:if="${i != productPage.number}"
+                   th:text="${i + 1}"
+                   th:href="@{/products(page=${i}, name=${name})}"></a>
+                <span th:if="${i == productPage.number}"
+                      th:text="${i + 1}"
+                      class="current"
+                      style="font-weight:bold; text-decoration:underline;"></span>
+            </span>
+
+            <a th:if="${productPage.hasNext()}"
+               th:href="@{/products(page=${productPage.number + 1}, name=${name})}">Próxima</a>
+        </div>
+    </div>
+</main>
+
+</body>
+<script th:src="@{/js/admPedidos.js}"></script>
+</html>

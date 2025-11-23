@@ -13,8 +13,10 @@
     <button type="submit">Sair</button>
 </form>
 <ul>
-    <li><a href="/products">Listar Produtos</a></li>
-    <li th:if="${isAdmin}"><a href="/usuarios">Listar Usuários</a></li>
+    <li style="margin-bottom: 10px"><a href="/products">Listar Produtos</a></li>
+    <li th:if="${isAdmin}" style="margin-bottom: 10px"><a href="/usuarios">Listar Usuários</a></li>
+    <li><a href="/admPedidos">Listar Pedidos</a></li>
 </ul>
+
 </body>
 </html>

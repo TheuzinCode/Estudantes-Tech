@@ -34,4 +34,7 @@ public class LoginController {
     @GetMapping("/pedido")
     public String pedidoPage() {return "pedido";}
 
+    @GetMapping("/admPedidos")
+    public String admPedidos() {return "admPedidos";}
+
 }

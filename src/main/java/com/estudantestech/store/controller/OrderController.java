@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -27,10 +28,22 @@ public class OrderController {
 
     @GetMapping("/pedido/{clientId}")
     public ResponseEntity<List<Order>> buscarPedidos(@PathVariable UUID clientId){
-
         List<Order> pedidos = orderService.burcarPedido(clientId);
-
         return ResponseEntity.ok(pedidos);
     }
 
+    @GetMapping("/todosPedidos")
+    public ResponseEntity<List<Order>> listarAll(){
+        List<Order> orders = orderService.selectAll();
+        return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/admPedidos/editar/{id}")
+    public ResponseEntity<Order> getOrderById(@PathVariable("id")Long id){
+       Optional<Order> orderOptional = orderService.getOrderById(id);
+       if (orderOptional.isPresent()){
+           return ResponseEntity.ok(orderOptional.get());
+       }
+       return ResponseEntity.notFound().build();
+    }
 }

@@ -12,7 +12,6 @@ async function carregarPedidos() {
   const resp = await fetch(`/api/pedido/${auth.clientId}`)
 
   const data = await resp.json()
-  console.log(data)
 
   const listaPedidos = document.getElementById("listaPedidos")
   const semPedidos = document.getElementById("semPedidos")

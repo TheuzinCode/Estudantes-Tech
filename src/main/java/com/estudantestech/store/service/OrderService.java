@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -81,6 +82,14 @@ public class OrderService {
         return orderRepository.findByClientClientId(clientId);
     }
 
+
+    public List<Order>selectAll(){
+        return orderRepository.findAll();
+    }
+    public Optional<Order> getOrderById(Long id){
+        return orderRepository.findById(id);
+
+    }
 
 
 
