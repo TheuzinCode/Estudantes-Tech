@@ -27,7 +27,7 @@ function renderizarPedidos(data) {
 
   // Ordenar por data decrescente (mais recentes primeiro)
   const pedidosOrdenados = [...data].sort((a, b) => {
-    return new Date(b.data + " " + b.horario) - new Date(a.data + " " + a.horario)
+      return new Date(b.creationTimestamp) - new Date(a.creationTimestamp)
   })
 
   listaPedidos.innerHTML = pedidosOrdenados

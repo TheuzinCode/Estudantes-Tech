@@ -35,7 +35,7 @@ function renderizarResumo(data) {
     if (data.paymentMethod === 'cartao') {
          pagamentoResumo.innerHTML = `
             <p><strong>Cartão de Crédito</strong></p>
-            <p>${data.parcelas}x sem juros</p>
+            <p>${data.parcelas} sem juros</p>
         `;
     } else {
         pagamentoResumo.innerHTML = `

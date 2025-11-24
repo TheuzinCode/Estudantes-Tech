@@ -19,7 +19,7 @@ function rederizarTodosPedios(data){
      })
 
        listarTodosPedidos.innerHTML = pedidosOrdenados
-                             .map((pedidos) => `
+                             .map(pedidos => `
 
                                  <tr>
                                    <td>${pedidos.orderId}</td>
@@ -33,7 +33,7 @@ function rederizarTodosPedios(data){
                                     </div>
                                    </td>
                                  </tr>
-                                 `,
+                                 `
                                 )
                                    .join("")
 }
