@@ -34,7 +34,8 @@ public class Order {
 
     private BigDecimal totalValue;
 
-    private String status = "AGUARDANDO_PAGAMENTO";
+    @Enumerated(EnumType.STRING)
+    private StatusOrder status = StatusOrder.AGUARDANDO_PAGAMENTO;
 
     private String parcelas;
 
@@ -44,6 +45,9 @@ public class Order {
 
     @CreationTimestamp
     private Instant creationTimestamp;
+
+
+
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

@@ -7,7 +7,7 @@ import java.util.UUID;
 public record detalhesCompletoDTO(UUID clienteId,
                                   BigDecimal totalValue,
                                   BigDecimal frete,
-                                  String status,
+                                  StatusOrder status,
                                   List<ItemOrderDTO> itens,
                                   String parcelas,
                                   String paymentMethod,

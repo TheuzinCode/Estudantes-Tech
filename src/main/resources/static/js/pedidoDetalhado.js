@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
  }
 
-
+        // RENDERIZAR RESUMO INTEIRO
 function renderizarResumo(data) {
     // Renderizar endereço
     const enderecoResumo = document.getElementById('enderecoResumo');
@@ -86,7 +86,6 @@ function renderizarResumo(data) {
 
     let valorDoDesconto = totalSemDesconto *0.05
 
-
     document.getElementById('subtotalResumo').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
     document.getElementById('totalResumo').textContent = `R$ ${data.totalValue.toFixed(2).replace('.', ',')}`;
 
@@ -99,7 +98,6 @@ function renderizarResumo(data) {
 
 function renderizarFrete(frete){
     const selectFrete = document.getElementById('frete');
-
 
     if(frete == "premium"){
         selectFrete.innerHTML =`<div class="summary-item">
@@ -123,4 +121,9 @@ function renderizarFrete(frete){
                                 `;
     }
 }
+
+    function alterarStatus(status){
+
+
+    }
 
