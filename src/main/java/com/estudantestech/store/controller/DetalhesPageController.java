@@ -13,4 +13,10 @@ public class DetalhesPageController {
         model.addAttribute("idPedido", id);
         return "admPedidosEdicao"; // carrega src/main/resources/templates/admPedidosEdicao.html
     }
+
+    @GetMapping("/pedido/{id}")
+    public String paginaPedidoDetalahdo(@PathVariable Long id, Model model) {
+        model.addAttribute("idPedido", id);
+        return "pedidoDetalhado"; // carrega src/main/resources/templates/admPedidosEdicao.html
+    }
 }

@@ -29,7 +29,7 @@ function rederizarTodosPedios(data){
                                    <td>
                                       <div class="action-buttons">
                                       <button class="btn-alterar"><a href="/admPedidosEdicao/${pedidos.orderId}"
-                                                            class="btn-alterar">Editar</a></button>
+                                                            class="btn-alterar" style="color: green; text-decoration: none">Editar</a></button>
                                     </div>
                                    </td>
                                  </tr>

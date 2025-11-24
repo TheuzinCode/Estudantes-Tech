@@ -54,8 +54,8 @@ function renderizarPedidos(data) {
                 </div>
             </div>
             <div class="pedido-footer">
-                <button class="btn btn-sm btn-detalhes" onclick="abrirDetalhes('${pedido.id}')">
-                    Mais Detalhes →
+                <button class="btn btn-sm btn-detalhes">
+                <a href= "/pedido/${pedido.orderId}" style="color: white; text-decoration: none">Mais Detalhes →</a>
                 </button>
             </div>
         </div>
