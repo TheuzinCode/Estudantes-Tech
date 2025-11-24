@@ -1,6 +1,7 @@
 package com.estudantestech.store.domain.adress;
 
 import com.estudantestech.store.domain.client.Client;
+import com.estudantestech.store.domain.order.Order;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -33,6 +34,8 @@ public class Adress {
     @JoinColumn(name = "idClient")
     @JsonIgnore
     private Client client;
+
+
 
     public Adress() {
     }

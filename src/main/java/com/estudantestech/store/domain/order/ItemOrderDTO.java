@@ -4,5 +4,5 @@ import com.estudantestech.store.domain.product.Product;
 
 import java.math.BigDecimal;
 
-public record ItemOrderDTO(Long productId, Integer quantity, BigDecimal price) {
+public record ItemOrderDTO(Long productId, String name, Integer quantity, BigDecimal price) {
 }

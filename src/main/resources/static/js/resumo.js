@@ -78,6 +78,8 @@ function renderizarResumo() {
         valorFrete = 5
     }
 
+    pedido.valorFrete = valorFrete;
+
     // Calcular e renderizar totais
     const subtotal = pedido.produtos.reduce((acc, p)  => acc + (p.price * p.qty), 0);
 
@@ -146,13 +148,23 @@ function renderizarFrete(){
         const order = {
           clientId: pedido.clientId,
           totalValue: pedido.total,
+          frete: pedido.valorFrete,
           itens: pedido.produtos.map(p => ({
                              productId: p.id,
                              quantity: p.qty,
                              price: p.price
                          })),
           parcelas: pedido.cartao ? pedido.cartao.parcelas : 1,
-          paymentMethod: pedido.formaPagamento
+          paymentMethod: pedido.formaPagamento,
+          enderecos: [{
+                     cep: pedido.endereco.cep,
+                     street: pedido.endereco.street,
+                     number: pedido.endereco.number,
+                     neighborhood: pedido.endereco.neighborhood,
+                     city: pedido.endereco.city,
+                     state: pedido.endereco.state,
+                     complement: pedido.endereco.complement
+                  }]
         }
 
     try{

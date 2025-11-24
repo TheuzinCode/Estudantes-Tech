@@ -1,6 +1,7 @@
 package com.estudantestech.store.domain.order;
 
 
+import com.estudantestech.store.domain.adress.Adress;
 import com.estudantestech.store.domain.client.Client;
 import com.estudantestech.store.domain.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,6 +40,8 @@ public class Order {
 
     private String paymentMethod;
 
+    private BigDecimal frete;
+
     @CreationTimestamp
     private Instant creationTimestamp;
 
@@ -50,5 +53,10 @@ public class Order {
         this.itens.add(item);
         item.setOrder(this);
     }
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderAddress> orderAddresses = new ArrayList<>();
+
 
 }

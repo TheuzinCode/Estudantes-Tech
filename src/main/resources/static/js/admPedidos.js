@@ -28,7 +28,7 @@ function rederizarTodosPedios(data){
                                    <td>${pedidos.status}</td>
                                    <td>
                                       <div class="action-buttons">
-                                      <button class="btn-alterar"><a th:href="@{/admPedidos/editar/{id}(id=${pedidos.orderId})}"
+                                      <button class="btn-alterar"><a href="/admPedidosEdicao/${pedidos.orderId}"
                                                             class="btn-alterar">Editar</a></button>
                                     </div>
                                    </td>

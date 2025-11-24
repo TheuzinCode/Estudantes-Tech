@@ -40,17 +40,7 @@
         </tr>
         </thead>
         <tbody id="tablePedidos">
-        <tr th:each="p : ${products}">
-            <td th:text="${p.idProduct}"></td>
-            <td th:text="${p.price}"></td>
-            <td th:text="${p.active}"></td>
-            <td>
-                <div class="action-buttons">
-                    <button class="btn-alterar"><a th:href="@{/produtos/editar/{id}(id=${p.idProduct})}"
-                                                   class="btn-alterar">Alterar</a></button>
-                    </div>
-            </td>
-        </tr>
+            <!-- SERA INSERIDO OS PEDIDOS VIA JAVASCRIPT -->
         </tbody>
     </table>
 

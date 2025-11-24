@@ -1,10 +1,13 @@
 package com.estudantestech.store.service;
 
 
+import com.estudantestech.store.domain.adress.Adress;
+import com.estudantestech.store.domain.adress.CreateAdressDTO;
 import com.estudantestech.store.domain.client.Client;
 import com.estudantestech.store.domain.order.*;
 import com.estudantestech.store.domain.product.Product;
 import com.estudantestech.store.repositories.ClientRepository;
+import com.estudantestech.store.repositories.OrderAddressRepository;
 import com.estudantestech.store.repositories.OrderRepository;
 import com.estudantestech.store.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private OrderAddressRepository orderAddressRepository;
+
 
 
     public OrderResponseDTO createOrder(OrderRequestDTO orderDTO){
@@ -40,6 +46,7 @@ public class OrderService {
 
         order.setClient(client);
         order.setTotalValue(orderDTO.totalValue());
+        order.setFrete(orderDTO.frete());
         order.setParcelas(orderDTO.parcelas());
         order.setPaymentMethod(orderDTO.paymentMethod());
 
@@ -54,8 +61,21 @@ public class OrderService {
             order.adicionarItens(itens);
         }
 
-        Order saved = orderRepository.save(order);
+        List<OrderAddress> enderecos = orderDTO.enderecos().stream().map(a -> {
+            OrderAddress address = new OrderAddress();
+            address.setCep(a.cep());
+            address.setStreet(a.street());
+            address.setNumber(a.number());
+            address.setNeighborhood(a.neighborhood());
+            address.setCity(a.city());
+            address.setState(a.state());
+            address.setOrder(order);
+            return address;
+        }).toList();
 
+        order.setOrderAddresses(enderecos);
+
+        Order saved = orderRepository.save(order);
 
         List<ItemOrderDTO> itensDTO = new ArrayList<>();
 
@@ -63,6 +83,7 @@ public class OrderService {
 
             ItemOrderDTO itemDTO = new ItemOrderDTO(
                     i.getProduct().getIdProduct(),
+                    i.getProduct().getName(),
                     i.getQuantity(),
                     i.getPriceProduct()
 
@@ -86,8 +107,53 @@ public class OrderService {
     public List<Order>selectAll(){
         return orderRepository.findAll();
     }
-    public Optional<Order> getOrderById(Long id){
-        return orderRepository.findById(id);
+
+
+    //tela detalhes do pedido
+    public detalhesCompletoDTO getDetalhesCompleto(Long id){
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+
+        List<ItemOrderDTO> listaItensDTO = order.getItens().stream()
+                .map(item -> new ItemOrderDTO(
+                        item.getProduct().getIdProduct(),
+                        item.getProduct().getName(),
+                        item.getQuantity(),
+                        item.getPriceProduct()
+                ))
+                .toList();
+
+
+        List<OrderAddressDTO> listaEnderecosDTO = order.getOrderAddresses().stream()
+                .map(end -> new OrderAddressDTO(
+                        end.getCep(),
+                        end.getStreet(),
+                        end.getNumber(),
+                        end.getComplement(),
+                        end.getNeighborhood(),
+                        end.getCity(),
+                        end.getState()
+                ))
+                .toList();
+
+
+        String infoParcelas = "À vista";
+        if ("CARTAO".equalsIgnoreCase(order.getPaymentMethod())) {
+            infoParcelas = order.getParcelas() + "x";
+        }
+
+        return new detalhesCompletoDTO(
+                order.getClient().getClientId(),
+                order.getTotalValue(),
+                order.getFrete(),
+                order.getStatus(),
+                listaItensDTO,
+                infoParcelas,
+                order.getPaymentMethod(),
+                listaEnderecosDTO
+        );
+
 
     }
 

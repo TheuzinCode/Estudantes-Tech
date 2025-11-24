@@ -37,4 +37,6 @@ public class LoginController {
     @GetMapping("/admPedidos")
     public String admPedidos() {return "admPedidos";}
 
+    @GetMapping("/admPedidosEdicao2")
+    public String admPedidosEdicao() {return "admPedidosEdicao2";}
 }
