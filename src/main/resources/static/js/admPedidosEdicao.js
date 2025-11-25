@@ -124,3 +124,49 @@ function renderizarFrete(frete){
     }
 }
 
+document.getElementById('alterarStatus').addEventListener('click', function(e) {
+    e.stopPropagation();
+    alterarStatusPedido();
+});
+
+    function alterarStatusPedido(){
+         const campoAlterar = document.getElementById("campoAlterar")
+
+
+         campoAlterar.innerHTML = `<select class="opcao" id="statusPedido" class="select-status">
+                                       <option value="AGUARDANDO_PAGAMENTO">Aguardando Pagamento</option>
+                                       <option value="PAGAMENTO_REJEITADO">Pagamento Rejeitado</option>
+                                       <option value="PAGAMENTO_COM_SUCESSO">Pagamento com Sucesso</option>
+                                       <option value="AGUARDANDO_RETIRADA">Aguardando Retirada</option>
+                                       <option value="EM_TRANSITO">Em Transito</option>
+                                       <option value="ENTREGUE">Entregue</option>
+                                   </select>
+
+                                   <button class="botao-alterar" onclick="atualizarStatus()">Salvar</button>`
+    }
+
+
+    async function atualizarStatus(){
+      const id = window.location.pathname
+        .split("/")
+        .filter(Boolean)
+        .pop();
+
+        const novoStatus = document.getElementById("statusPedido").value;
+
+        const resp = await fetch(`/api/admPedidosEdicao/${id}/status`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({statusOrder: novoStatus})
+        });
+
+        if (!resp.ok) {
+                    const msg = await resp.text();
+                    alert("Erro ao alterar status: " + msg);
+                    return;
+                }
+
+         alert("Status atualizado com sucesso!");
+         window.location.reload();
+
+    }

@@ -259,6 +259,24 @@ body {
     margin-bottom: 1rem;
 }
 
+  .botao-alterar{
+   background-color: #10b981;
+   height: 35px;
+   color: white;
+   border-bottom: 1px solid var(--border);
+   border-color: #10b981;
+   border-radius: 10px;
+   cursor: pointer;
+   font-size:14px;
+  }
+  .opcao{
+     padding: 5px;
+     font-size:14px;
+     height: 35px;
+     border-radius: 10px;
+     cursor: pointer;
+    }
+
 .summary-items {
     border-bottom: 1px solid var(--border);
     padding-bottom: 1rem;

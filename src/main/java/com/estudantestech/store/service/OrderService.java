@@ -157,6 +157,20 @@ public class OrderService {
 
     }
 
+    public void atulizatStatus(Long id, StatusOrder novoStatus){
+        Order pedido = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+        if (novoStatus == null) {
+            throw new IllegalArgumentException("O novo status não pode ser nulo!");
+        }
+
+        pedido.setStatus(novoStatus);
+
+        orderRepository.save(pedido);
+    }
+
+
 
 
 

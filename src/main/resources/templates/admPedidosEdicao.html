@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resumo da Compra</title>
     <link rel="stylesheet" th:href="@{/css/checkout.css}">
-
-
 </head>
+
 <body>
 <div class="container">
     <header class="header">
-        <h1>Reusmo do Pedido</h1>
-        <p class="subtitle">Confira seu pedido completo</p>
+        <h1>Resumo Pedido</h1>
     </header>
 
     <div class="resumo-container">
@@ -69,6 +67,12 @@
                         <span>Total</span>
                         <span id="totalResumo">R$ 0,00</span>
                     </div>
+                </div>
+            </div>
+            <div class="card summary-card">
+                <h3>Alterar Status</h3>
+                <div id="campoAlterar" class="summary-totals">
+                    <button id="alterarStatus" class="botao-alterar">ALTERAR</button>
                 </div>
             </div>
         </aside>

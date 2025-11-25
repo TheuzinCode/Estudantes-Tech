@@ -53,5 +53,13 @@ public class OrderController {
     }
 
 
+    @PutMapping("/admPedidosEdicao/{id}/status")
+    public ResponseEntity<?>atualizarStatus( @PathVariable Long id,
+                                                  @RequestBody AtualizarStatusDTO atualizarStatusDTO){
+        orderService.atulizatStatus(id, atualizarStatusDTO.statusOrder());
+        return ResponseEntity.ok("Status atualizado com sucesso!");
+    }
+
+
 
 }
