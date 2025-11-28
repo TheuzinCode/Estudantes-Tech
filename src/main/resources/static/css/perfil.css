@@ -174,3 +174,28 @@ body {
     background: #f4f4f4;
     color: #777;
 }
+
+.billing {
+    max-width: 720px;
+    margin: 0 auto 24px auto;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.billing h2 {
+    margin: 0 0 16px 0;
+    font-size: 22px;
+    color: #222;
+}
+
+.billing-address-item {
+    border: 1px solid #e8e8e8;
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}

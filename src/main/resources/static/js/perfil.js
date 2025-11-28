@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const addrState = document.getElementById('addr-state')
     const addrNumber = document.getElementById('addr-number')
     const addrComplement = document.getElementById('addr-complement')
+    const billingAddress = document.getElementById('billing-address')
 
     //FORMATAR CEP
     function digitsOnly(v){
@@ -132,8 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function renderAddressItem(a){
         const safe = (v) => (v || '').toString()
-
-        // usa radio para selecionar endereço padrão; name igual garante apenas um selecionado
+        
         return `
         <div class="address-item ${a.isDefault ? 'default' : ''}" data-id="${a.adressId}">
             <div class="address-radio">
@@ -148,19 +148,50 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>`
     }
 
+    function renderBillingAddress(a){
+        if (!a) return '<p>Nenhum endereço ainda.</p>'
 
-    // <!-- DIV PARA ADICIONAR ENDERECO -->
+        const safe = (v) => (v || '').toString()
+
+        return `<div class="billing-address-item">
+            <div><strong>${safe(a.street)}${a.number ? ', ' + safe(a.number) : ''}</strong></div>
+            <div>${safe(a.neighborhood)}${a.neighborhood ? ' - ' : ''}${safe(a.city)}${a.state ? '/' + safe(a.state) : ''}</div>
+            <div>${safe(a.cep)}${a.complement ? ' • ' + safe(a.complement) : ''}</div>
+        </div>`
+    }
+
+    function selectOldestAddress(list){
+        if (!Array.isArray(list) || list.length === 0) return null
+        const copy = [...list]
+
+        copy.sort((a,b) => {
+            const ta = a.creationTimestamp ? new Date(a.creationTimestamp).getTime() : Infinity
+            const tb = b.creationTimestamp ? new Date(b.creationTimestamp).getTime() : Infinity
+            return ta - tb
+        })
+
+        return copy[0] || null
+    }
+
     async function loadAddresses(){
         if (!addressList) return
 
         try {
             const resp = await fetch(`/api/clients/${auth.clientId}/addresses`)
-            if (!resp.ok) { addressList.innerHTML = '<p>Não foi possível carregar endereços.</p>'; return }
+            if (!resp.ok) {
+                addressList.innerHTML = '<p>Não foi possível carregar endereços.</p>'; return
+            }
+
             const list = await resp.json()
+
             if (!Array.isArray(list) || list.length === 0) {
                 addressList.innerHTML = '<p>Nenhum endereço cadastrado.</p>'
+                billingAddress.innerHTML = '<p>Nenhum endereço ainda.</p>'
+
             } else {
                 addressList.innerHTML = list.map(renderAddressItem).join('')
+                const oldest = selectOldestAddress(list)
+                if (billingAddress) billingAddress.innerHTML = renderBillingAddress(oldest)
             }
 
         } catch (e) {
@@ -168,7 +199,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // listener delegação para mudanças nos radios de padrao
     if (addressList) {
         let isSettingDefault = false
         addressList.addEventListener('change', async function(ev){
@@ -176,19 +206,17 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!target) return
             if (target.name === 'defaultAddress') {
                 if (isSettingDefault) {
-                    // impede múltiplas requisições concorrentes; mantém seleção anterior
                     target.checked = false
                     return
                 }
+
                 isSettingDefault = true
 
-                // desabilita todos os radios ate concluir
                 const allRadios = addressList.querySelectorAll('input[name="defaultAddress"]')
                 allRadios.forEach(r => r.disabled = true)
 
                 const selectedId = target.value
 
-                // guarda o anterior para possível rollback
                 const prevDefault = addressList.querySelector('.address-item.default')
                 const prevId = prevDefault ? prevDefault.getAttribute('data-id') : null
 
@@ -199,31 +227,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if (!resp.ok) {
                         alert('Não foi possível definir endereço padrão.')
-                        // rollback: voltar o radio anterior
                         if (prevId && prevId !== selectedId) {
                             const prevRadio = addressList.querySelector(`input[name="defaultAddress"][value="${prevId}"]`)
 
                             if (prevRadio) prevRadio.checked = true
                         }
+
                         return
                     }
 
-                    // sucesso - ajusta o destaque visual localmente, sem recarregar lista
                     addressList.querySelectorAll('.address-item.default').forEach(el => el.classList.remove('default'))
                     const selectedItem = target.closest('.address-item')
+
                     if (selectedItem) selectedItem.classList.add('default')
 
                 } catch (e) {
                     alert('Erro de conexão ao definir endereço padrão.')
 
-                    // rollback: voltar o radio anterior
                     if (prevId && prevId !== selectedId) {
                         const prevRadio = addressList.querySelector(`input[name="defaultAddress"][value="${prevId}"]`)
                         if (prevRadio) prevRadio.checked = true
                     }
 
                 } finally {
-                    // reabilita os rádios e libera o lock
                     allRadios.forEach(r => r.disabled = false)
                     isSettingDefault = false
                 }
@@ -234,6 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (addressForm) {
         addressForm.addEventListener('submit', async function(e){
             e.preventDefault()
+
             const cep = (addrCep?.value || '').trim()
             const number = (addrNumber?.value || '').trim()
 
@@ -261,7 +288,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('Não foi possível adicionar o endereço.'); return
                 }
 
-                // limpar e recarregar
                 if (addrCep) addrCep.value = ''
                 if (addrStreet) addrStreet.value = ''
                 if (addrNeighborhood) addrNeighborhood.value = ''
@@ -320,7 +346,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         localStorage.setItem('clientAuth', JSON.stringify(newAuth))
 
-        // limpa campo de senha
         inputPassword.value = ''
 
         alert('Perfil atualizado com sucesso!')

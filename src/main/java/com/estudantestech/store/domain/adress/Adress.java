@@ -1,12 +1,15 @@
 package com.estudantestech.store.domain.adress;
 
 import com.estudantestech.store.domain.client.Client;
-import com.estudantestech.store.domain.order.Order;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
 
 @Table(name = "adresses")
 @Entity
@@ -35,6 +38,11 @@ public class Adress {
     @JsonIgnore
     private Client client;
 
+    @CreationTimestamp
+    private Instant creationTimestamp;
+
+    @UpdateTimestamp
+    private Instant updateTimestamp;
 
 
     public Adress() {
